@@ -1,4 +1,5 @@
 import Header from "./Header";
+import CartButton from "./CartButton";
 import PropTypes from "prop-types";
 
 export function Layout(props) {
@@ -11,6 +12,7 @@ export function Layout(props) {
   return (
     <>
       <Header />
+      <CartButton />
       {props.children}
     </>
   );
