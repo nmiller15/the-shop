@@ -6,7 +6,7 @@ export function MobileNav({ setMenuOpen, categories }) {
   };
 
   return (
-    <div className="absolute right-0 top-0 h-screen w-[390px] bg-blue-800">
+    <div className="absolute right-0 top-0 z-50 h-screen w-[390px] bg-blue-800">
       <i
         className="iconoir-xmark absolute right-4 top-4 text-4xl text-white hover:cursor-pointer md:text-5xl"
         onClick={() => setMenuOpen(false)}
