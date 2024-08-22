@@ -1,8 +1,19 @@
 import Header from "./Header";
-// Probably get rid of this layout file
+import PropTypes from "prop-types";
 
-export function Layout() {
-  return <Header />;
+export function Layout(props) {
+  Layout.propTypes = {
+    children: PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node,
+    ]).isRequired,
+  };
+  return (
+    <>
+      <Header />
+      {props.children}
+    </>
+  );
 }
 
 export default Layout;
