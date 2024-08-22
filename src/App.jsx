@@ -1,7 +1,12 @@
 import Layout from "./Layout";
+import ProductsList from "./ProductsList";
 
 function App() {
-  return <Layout></Layout>;
+  return (
+    <Layout>
+      <ProductsList />
+    </Layout>
+  );
 }
 
 export default App;
