@@ -86,6 +86,14 @@ function LoginForm() {
     //TODO: Add logic to send the form data object
   };
 
+  console.log(
+    errors.username && Object.keys(errors.username).length == 0
+      ? "true"
+      : "false",
+    errors.username?.length,
+    errors.username,
+  );
+
   return (
     <>
       <div className={`mx-auto mt-4 w-80 md:mt-10`}>
@@ -97,14 +105,15 @@ function LoginForm() {
               </h1>
               <div>
                 <input
-                  className={`mt-2 w-full border-b bg-transparent text-xl focus:border-b-2 focus:outline-none ${errors.name ? "border-red-300" : "border-black"}`}
+                  className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.name && Object.keys(errors.name).length != 0 ? "border-red-300" : "border-black"} focus:border-blue-300`}
                   name="name"
                   value={formData.name}
                   onChange={handleFormChange}
                   id="name"
                   type="text"
+                  placeholder="Full Name"
                 />
-                <label className="" htmlFor="name">
+                <label className="hidden" htmlFor="name">
                   Full Name
                 </label>
                 {errors.name ? (
@@ -117,14 +126,15 @@ function LoginForm() {
               </div>
               <div>
                 <input
-                  className={`mt-2 w-full border-b bg-transparent text-xl focus:border-b-2 focus:outline-none ${errors.email ? "border-red-300" : "border-black"}`}
+                  className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.email && Object.keys(errors.email).length != 0 ? "border-red-300" : "border-black"}`}
                   name="email"
                   value={formData.email}
                   onChange={handleFormChange}
                   id="email"
                   type="text"
+                  placeholder="Email Address"
                 />
-                <label className="" htmlFor="email">
+                <label className="hidden" htmlFor="email">
                   Email Address
                 </label>
                 {errors.email ? (
@@ -137,14 +147,15 @@ function LoginForm() {
               </div>
               <div>
                 <input
-                  className={`mt-2 w-full border-b bg-transparent text-xl focus:border-b-2 focus:outline-none ${errors.email ? "border-red-300" : "border-black"}`}
+                  className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.streetOne && Object.keys(errors.streetOne).length != 0 ? "border-red-300" : "border-black"}`}
                   name="streetOne"
                   value={formData.address.streetOne}
                   onChange={handleFormChange}
                   type="text"
                   id="street-one"
+                  placeholder="Address Line 1"
                 />
-                <label className="" htmlFor="street-one">
+                <label className="hidden" htmlFor="street-one">
                   Address Line 1
                 </label>
                 {errors.streetOne ? (
@@ -157,14 +168,15 @@ function LoginForm() {
               </div>
               <div>
                 <input
-                  className={`mt-2 w-full border-b bg-transparent text-xl focus:border-b-2 focus:outline-none ${errors.email ? "border-red-300" : "border-black"}`}
+                  className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.streetTwo && Object.keys(errors.streetTwo).length != 0 ? "border-red-300" : "border-black"}`}
                   name="streetTwo"
                   value={formData.address.streetTwo}
                   onChange={handleFormChange}
                   type="text"
                   id="street-two"
+                  placeholder="Address Line 2"
                 />
-                <label className="" htmlFor="street-two">
+                <label className="hidden" htmlFor="street-two">
                   Address Line 2
                 </label>
                 {errors.streetTwo ? (
@@ -177,14 +189,15 @@ function LoginForm() {
               </div>
               <div>
                 <input
-                  className={`mt-2 w-full border-b bg-transparent text-xl focus:border-b-2 focus:outline-none ${errors.email ? "border-red-300" : "border-black"}`}
+                  className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.city && Object.keys(errors.city).length != 0 ? "border-red-300" : "border-black"}`}
                   name="city"
                   value={formData.address.city}
                   onChange={handleFormChange}
                   type="text"
                   id="city"
+                  placeholder="City"
                 />
-                <label className="" htmlFor="city">
+                <label className="hidden" htmlFor="city">
                   City
                 </label>
                 {errors.city ? (
@@ -224,14 +237,15 @@ function LoginForm() {
               </div>
               <div>
                 <input
-                  className={`mt-2 w-full border-b bg-transparent text-xl focus:border-b-2 focus:outline-none ${errors.email ? "border-red-300" : "border-black"}`}
+                  className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.zip && Object.keys(errors.zip).length != 0 ? "border-red-300" : "border-black"}`}
                   name="zip"
                   value={formData.address.zip}
                   onChange={handleFormChange}
                   type="text"
                   id="zip"
+                  placeholder="ZIP Code"
                 />
-                <label className="" htmlFor="zip">
+                <label className="hidden" htmlFor="zip">
                   Zip
                 </label>
                 {errors.zip ? (
@@ -252,18 +266,19 @@ function LoginForm() {
           )}
           <div>
             <input
-              className={`mt-4 w-full border-b bg-transparent text-xl focus:border-b-2 focus:outline-none ${errors.email ? "border-red-300" : "border-black"}`}
+              className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.username && Object.keys(errors.username).length != 0 ? "border-red-300" : "border-black"}`}
               name="username"
               value={formData.username}
               onChange={handleFormChange}
               type="text"
               id="username"
+              placeholder="Username"
             />
-            <label className="" htmlFor="username">
+            <label className="hidden" htmlFor="username">
               Username
             </label>
             {errors.username ? (
-              <p className="text-right text-red-500">
+              <p className="-pb-4 text-right text-red-500">
                 {errors.username.message}
               </p>
             ) : (
@@ -273,14 +288,15 @@ function LoginForm() {
 
           <div>
             <input
-              className={`mt-4 w-full border-b bg-transparent text-xl focus:border-b-2 focus:outline-none ${errors.email ? "border-red-300" : "border-black"}`}
+              className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.password && Object.keys(errors.password).length != 0 ? "border-red-300" : "border-black"}`}
               name="password"
               value={formData.password}
               onChange={handleFormChange}
               type={isPeeking ? "text" : "password"}
               id="password"
+              placeholder="Password"
             />
-            <label className="" htmlFor="password">
+            <label className="hidden" htmlFor="password">
               Password
             </label>
             {formData.password && (
@@ -302,14 +318,15 @@ function LoginForm() {
             <>
               <div>
                 <input
-                  className={`mt-2 w-full border-b bg-transparent text-xl focus:border-b-2 focus:outline-none ${errors.email ? "border-red-300" : "border-black"}`}
+                  className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.reTypePass && Object.keys(errors.reTypePass).length != 0 ? "border-red-300" : "border-black"}`}
                   name="reTypePass"
                   value={formData.reTypePass}
                   onChange={handleFormChange}
                   type={isPeeking ? "text" : "password"}
                   id="re-password"
+                  placeholder="Re-Type Password"
                 />
-                <label className="" htmlFor="re-password">
+                <label className="hidden" htmlFor="re-password">
                   Re-Type Password
                 </label>
                 {errors.reTypePass ? (
@@ -324,7 +341,7 @@ function LoginForm() {
           ) : (
             <></>
           )}
-          <input type="submit" />
+          <input type="submit" value={isNewUser ? "Create Account" : "Login"} />
         </form>
       </div>
       {isNewUser ? (
