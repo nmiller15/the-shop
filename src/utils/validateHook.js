@@ -55,7 +55,9 @@ export default function useFormValidation(formData, errors, setErrors) {
       !validator.isEmpty(address.state) ||
       !validator.isEmpty(address.zip)
     ) {
-      addError("streetOne", "required", "Enter a street address.");
+      if (validator.isEmpty(address.streetOne)) {
+        addError("streetOne", "required", "Enter a street address.");
+      }
     }
 
     return errors.streetOne == null;
