@@ -86,13 +86,7 @@ function LoginForm() {
     //TODO: Add logic to send the form data object
   };
 
-  console.log(
-    errors.username && Object.keys(errors.username).length == 0
-      ? "true"
-      : "false",
-    errors.username?.length,
-    errors.username,
-  );
+  console.log(errors);
 
   return (
     <>
@@ -100,7 +94,7 @@ function LoginForm() {
         <form onSubmit={handleSubmit}>
           {isNewUser ? (
             <>
-              <h1 className="mb-8 text-center text-3xl font-semibold md:text-3xl lg:text-4xl">
+              <h1 className="mb-4 text-center text-3xl font-semibold md:text-3xl lg:text-4xl">
                 Create An Account
               </h1>
               <div>
@@ -126,7 +120,7 @@ function LoginForm() {
               </div>
               <div>
                 <input
-                  className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.email && Object.keys(errors.email).length != 0 ? "border-red-300" : "border-black"}`}
+                  className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.email && Object.keys(errors.email).length != 0 ? "border-red-300" : "border-black"} focus:border-blue-300`}
                   name="email"
                   value={formData.email}
                   onChange={handleFormChange}
@@ -147,7 +141,7 @@ function LoginForm() {
               </div>
               <div>
                 <input
-                  className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.streetOne && Object.keys(errors.streetOne).length != 0 ? "border-red-300" : "border-black"}`}
+                  className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.streetOne && Object.keys(errors.streetOne).length != 0 ? "border-red-300" : "border-black"} focus:border-blue-300`}
                   name="streetOne"
                   value={formData.address.streetOne}
                   onChange={handleFormChange}
@@ -168,7 +162,7 @@ function LoginForm() {
               </div>
               <div>
                 <input
-                  className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.streetTwo && Object.keys(errors.streetTwo).length != 0 ? "border-red-300" : "border-black"}`}
+                  className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.streetTwo && Object.keys(errors.streetTwo).length != 0 ? "border-red-300" : "border-black"} focus:border-blue-300`}
                   name="streetTwo"
                   value={formData.address.streetTwo}
                   onChange={handleFormChange}
@@ -187,57 +181,62 @@ function LoginForm() {
                   <></>
                 )}
               </div>
-              <div>
-                <input
-                  className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.city && Object.keys(errors.city).length != 0 ? "border-red-300" : "border-black"}`}
-                  name="city"
-                  value={formData.address.city}
-                  onChange={handleFormChange}
-                  type="text"
-                  id="city"
-                  placeholder="City"
-                />
-                <label className="hidden" htmlFor="city">
-                  City
-                </label>
-                {errors.city ? (
-                  <p className="text-right text-red-500">
-                    {errors.city.message}
-                  </p>
-                ) : (
-                  <></>
-                )}
+              <div className="flex justify-between">
+                <div>
+                  <input
+                    className={`mt-4 h-10 w-56 rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.city && Object.keys(errors.city).length != 0 ? "border-red-300" : "border-black"} focus:border-blue-300`}
+                    name="city"
+                    value={formData.address.city}
+                    onChange={handleFormChange}
+                    type="text"
+                    id="city"
+                    placeholder="City"
+                  />
+                  <label className="hidden" htmlFor="city">
+                    City
+                  </label>
+                  {errors.city ? (
+                    <p className="text-right text-red-500">
+                      {errors.city.message}
+                    </p>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+                <div>
+                  <select
+                    name="state"
+                    value={formData.address.state}
+                    onChange={handleFormChange}
+                    id="state"
+                    className="mt-4 w-20 rounded-md border border-black p-2 shadow-md focus:border-blue-300"
+                  >
+                    <option value="" className="text-blue-500">
+                      --
+                    </option>
+                    {usStates.map((state, index) => {
+                      return (
+                        <option key={index} value={state.name}>
+                          {state.name}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <label className="hidden" htmlFor="state">
+                    State
+                  </label>
+                  {errors.state ? (
+                    <p className="text-right text-red-500">
+                      {errors.state.message}
+                    </p>
+                  ) : (
+                    <></>
+                  )}
+                </div>
               </div>
               <div>
-                <select
-                  name="state"
-                  value={formData.address.state}
-                  onChange={handleFormChange}
-                  id="state"
-                >
-                  <option value=""></option>
-                  {usStates.map((state, index) => {
-                    return (
-                      <option key={index} value={state.name}>
-                        {state.name}
-                      </option>
-                    );
-                  })}
-                </select>
-                <label className="" htmlFor="state">
-                  State
-                </label>
-                {errors.state ? (
-                  <p className="text-right text-red-500">
-                    {errors.state.message}
-                  </p>
-                ) : (
-                  <></>
-                )}
-              </div>
-              <div>
                 <input
-                  className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.zip && Object.keys(errors.zip).length != 0 ? "border-red-300" : "border-black"}`}
+                  className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.zip && Object.keys(errors.zip).length != 0 ? "border-red-300" : "border-black"} focus:border-blue-300`}
                   name="zip"
                   value={formData.address.zip}
                   onChange={handleFormChange}
@@ -266,7 +265,7 @@ function LoginForm() {
           )}
           <div>
             <input
-              className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.username && Object.keys(errors.username).length != 0 ? "border-red-300" : "border-black"}`}
+              className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.username && Object.keys(errors.username).length != 0 ? "border-red-300" : "border-black"} focus:border-blue-300`}
               name="username"
               value={formData.username}
               onChange={handleFormChange}
@@ -288,7 +287,7 @@ function LoginForm() {
 
           <div>
             <input
-              className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.password && Object.keys(errors.password).length != 0 ? "border-red-300" : "border-black"}`}
+              className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.password && Object.keys(errors.password).length != 0 ? "border-red-300" : "border-black"} focus:border-blue-300`}
               name="password"
               value={formData.password}
               onChange={handleFormChange}
@@ -301,7 +300,7 @@ function LoginForm() {
             </label>
             {formData.password && (
               <i
-                className={`iconoir-eye ${isPeeking && "bg-slate-400"} hover:cursor-pointer`}
+                className={`${!isPeeking ? "iconoir-eye" : "iconoir-eye-closed"} absolute ${!isPeeking ? "-translate-x-10 translate-y-5" : "-translate-x-10 translate-y-6"} text-3xl hover:cursor-pointer`}
                 onClick={() => setIsPeeking((prev) => !prev)}
               ></i>
             )}
@@ -318,7 +317,7 @@ function LoginForm() {
             <>
               <div>
                 <input
-                  className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.reTypePass && Object.keys(errors.reTypePass).length != 0 ? "border-red-300" : "border-black"}`}
+                  className={`mt-4 h-10 w-full rounded-md border bg-slate-50 p-2 text-lg shadow-md focus:border-b-2 focus:outline-none ${errors.reTypePass && Object.keys(errors.reTypePass).length != 0 ? "border-red-300" : "border-black"} focus:border-blue-300`}
                   name="reTypePass"
                   value={formData.reTypePass}
                   onChange={handleFormChange}
@@ -341,7 +340,13 @@ function LoginForm() {
           ) : (
             <></>
           )}
-          <input type="submit" value={isNewUser ? "Create Account" : "Login"} />
+          <div className="flex justify-center">
+            <input
+              className="mx-auto mb-4 mt-8 rounded-md bg-blue-400 px-8 py-4 text-2xl font-bold text-white shadow-md hover:cursor-pointer hover:shadow-lg active:bg-blue-500"
+              type="submit"
+              value={isNewUser ? "Create Account" : "Login"}
+            />
+          </div>
         </form>
       </div>
       {isNewUser ? (
