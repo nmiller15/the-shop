@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import states from "states-us";
 import useFormValidation from "./utils/validateHook";
 
@@ -83,10 +83,7 @@ function LoginForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    //TODO: Add logic to send the form data object
   };
-
-  console.log(errors);
 
   return (
     <>

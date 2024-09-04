@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 export function DesktopNav({ categories }) {
   DesktopNav.propTypes = {
@@ -10,9 +11,11 @@ export function DesktopNav({ categories }) {
       <ul className="mt-4 flex gap-6 text-xl">
         {categories?.map((category, index) => {
           return (
-            <li className="hover:cursor-pointer" key={index}>
-              {category.value}
-            </li>
+            <div key={index}>
+              <Link to={category.href}>
+                <li className="hover:cursor-pointer">{category.value}</li>
+              </Link>
+            </div>
           );
         })}
       </ul>

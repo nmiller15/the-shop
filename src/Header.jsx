@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { DesktopNav } from "./DesktopNav";
 import { MobileNav } from "./MobileNav";
+import { Link } from "react-router-dom";
 
 function Header() {
   const [categories, setCategories] = useState([]);
@@ -14,7 +15,7 @@ function Header() {
         const categories = json.map((item) => {
           return {
             value: item,
-            href: `/${item.replaceAll(" ", "")}`,
+            href: `/?category=${item.replaceAll(" ", "").trim().replaceAll("'", "")}`,
           };
         });
         setCategories([
@@ -31,10 +32,10 @@ function Header() {
     <>
       {/* Header section with conditional rendering for mobile displays */}
       <div className="mx-6 flex justify-between py-5">
-        <div className="flex gap-2 text-3xl md:text-4xl">
+        <Link to="/" className="flex gap-2 text-3xl md:text-4xl">
           <i className="iconoir-shop pt-[2px]"></i>
           <p>the shop</p>
-        </div>
+        </Link>
         <div>
           <i
             className="iconoir-menu mt-[2px] text-3xl hover:cursor-pointer md:text-4xl lg:hidden"

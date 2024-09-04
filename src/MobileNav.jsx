@@ -1,4 +1,6 @@
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+
 export function MobileNav({ setMenuOpen, categories }) {
   MobileNav.propTypes = {
     categories: PropTypes.arrayOf(PropTypes.object),
@@ -15,12 +17,11 @@ export function MobileNav({ setMenuOpen, categories }) {
         <ul className="mt-24">
           {categories?.map((category, index) => {
             return (
-              <li
-                className="my-6 w-full pr-6 text-right text-3xl font-semibold text-white hover:cursor-pointer"
-                key={index}
-              >
-                {category.value}
-              </li>
+              <div key={index}>
+                <li className="my-6 w-full pr-6 text-right text-3xl font-semibold text-white hover:cursor-pointer">
+                  <Link to={category.href}>{category.value}</Link>
+                </li>
+              </div>
             );
           })}
         </ul>
