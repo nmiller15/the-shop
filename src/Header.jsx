@@ -4,7 +4,9 @@ import { MobileNav } from "./MobileNav";
 import { Link } from "react-router-dom";
 
 function Header() {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([
+    { value: "login", href: "/login" },
+  ]);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
