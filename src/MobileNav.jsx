@@ -19,7 +19,9 @@ export function MobileNav({ setMenuOpen, categories }) {
             return (
               <div key={index}>
                 <li className="my-6 w-full pr-6 text-right text-3xl font-semibold text-white hover:cursor-pointer">
-                  <Link to={category.href}>{category.value}</Link>
+                  <Link to={category.href} onClick={() => setMenuOpen(false)}>
+                    {category.value}
+                  </Link>
                 </li>
               </div>
             );
