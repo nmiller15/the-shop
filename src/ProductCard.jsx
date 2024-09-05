@@ -8,34 +8,47 @@ function ProductCard({ product }) {
   };
 
   const [quickAddHover, setQuickAddHover] = useState(false);
+  const [itemInCart, setItemInCart] = useState(false);
+
+  // const handleAddToCart = () => {
+  // TODO: Will eventually want to implement logic based on how many of the product are in the cart
+  // }
 
   return (
-    <div className="group mx-auto my-2 w-10/12 cursor-pointer rounded-md bg-gray-200 p-4 md:w-5/12 lg:w-72">
+    <div
+      onMouseOver={() => setQuickAddHover(true)}
+      onMouseOut={() => setQuickAddHover(false)}
+      className="group mx-auto mb-20 mt-2 w-8/12 cursor-pointer rounded-md p-2 md:mb-8 md:mt-2 md:w-48"
+    >
       <Link to={`/products/${product.id}`}>
-        <div className="mb-3 flex h-96 w-full place-content-center rounded-md bg-white">
-          <div className="absolute flex h-10 w-16 translate-x-24 translate-y-4 items-center justify-center gap-2 rounded-sm bg-gray-200 p-2 md:translate-x-20 lg:translate-x-[4.5rem]">
-            <p className="font-semibold lg:text-sm">{product.rating.rate}</p>
-            <i className="iconoir-star-solid text-md lg:text-sm"></i>
+        <div className="mb-3 flex h-60 w-full place-content-center rounded-md bg-white">
+          <div className="absolute flex h-6 translate-x-24 translate-y-4 items-center justify-center gap-1 rounded-lg bg-gray-200 p-1 md:translate-x-20 lg:translate-x-[4.5rem]">
+            <p className="text-[.75rem] font-semibold">{product.rating.rate}</p>
+            <i className="iconoir-star-solid text-xs"></i>
           </div>
-          <img src={product.image} className="object-scale-down" />
+          <img
+            src={product.image}
+            className="max-w-8/12 object-scale-down md:max-w-40"
+          />
         </div>
-        <p className="text-2xl font-bold lg:text-lg">{`$${product.price.toFixed(2)}`}</p>
-        <h2
-          className={`truncate text-lg font-semibold lg:text-sm ${quickAddHover ? "" : "group-hover:text-clip group-hover:underline"}`}
-        >
+        <p className="text-xs font-semibold text-slate-400">{`$${product.price.toFixed(2)}`}</p>
+        <h2 className="truncate text-sm font-semibold group-hover:underline">
           {product.title}
         </h2>
-        <p className="h-12 overflow-clip text-ellipsis text-balance lg:text-xs">
+        <p className="h-11 overflow-clip text-ellipsis text-balance text-[.7rem] leading-tight text-slate-500">
           {product.description}
         </p>
       </Link>
-      <button
-        onMouseOver={() => setQuickAddHover(true)}
-        onMouseOut={() => setQuickAddHover(false)}
-        className="peer mt-2 h-12 w-full place-content-center rounded-md bg-gray-300 text-center text-lg hover:bg-blue-200"
-      >
-        Quick Add to Cart
-      </button>
+      {(quickAddHover || itemInCart) && (
+        <button
+          className={`absolute mt-2 hidden -translate-y-40 translate-x-[9.2rem] place-content-center rounded-md ${itemInCart ? "bg-slate-200" : "bg-slate-100"} p-2 pb-1 text-center text-lg ${quickAddHover ? "opacity-1" : "opacity-0"} transition-all duration-100 hover:bg-slate-300 md:block`}
+          onClick={() => setItemInCart((prev) => !prev)}
+        >
+          <i
+            className={`${itemInCart ? "iconoir-cart-minus" : "iconoir-cart-plus"} text-xl text-slate-600`}
+          ></i>
+        </button>
+      )}
     </div>
   );
 }
