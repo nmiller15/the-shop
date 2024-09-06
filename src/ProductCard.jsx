@@ -41,7 +41,7 @@ function ProductCard({ product }) {
       </Link>
       {(quickAddHover || itemInCart) && (
         <button
-          className={`absolute mt-2 hidden -translate-y-40 translate-x-[9.2rem] place-content-center rounded-md ${itemInCart ? "bg-slate-200" : "bg-slate-100"} p-2 pb-1 text-center text-lg ${quickAddHover ? "opacity-1" : "opacity-0"} transition-all duration-100 hover:bg-slate-300 md:block`}
+          className={`absolute mt-2 hidden -translate-y-40 translate-x-[9.2rem] place-content-center rounded-md ${itemInCart ? "bg-slate-200" : "bg-slate-100"} p-2 pb-1 text-center text-lg ${quickAddHover || itemInCart ? "opacity-1" : "opacity-0"} transition-all duration-100 hover:bg-slate-300 md:block`}
           onClick={() => setItemInCart((prev) => !prev)}
         >
           <i
