@@ -28,7 +28,8 @@ Table products {
   description text
   category_id varchar [Ref: > categories.id]
   rating integer
-  price money 
+  price money
+  active bool
 }
 
 Table carts {

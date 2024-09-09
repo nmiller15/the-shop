@@ -25,6 +25,7 @@ CREATE TABLE "products" (
   "category_id" varchar,
   "rating" integer,
   "price" money
+  "active" boolean
 );
 
 CREATE TABLE "carts" (
