@@ -40,7 +40,7 @@ Table orders {
   number integer [pk]
   date_created datetime
   status varchar
-
+  address_id integer [ref: > addresses.id]
   customer_id varchar [ref: > users.username]
   Note: 'Status can be: "submitted" "shipped" or "fulfilled"'
 }
