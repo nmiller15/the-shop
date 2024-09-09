@@ -1,0 +1,76 @@
+// Initial Tables for 'shop'
+
+Table users {
+  id integer [pk]
+  username varchar unique
+  password varchar
+  first_name varchar
+  last_name varchar
+  date_created datetime
+  is_admin boolean
+
+  Note: "Join to carts on username"
+}
+
+Table addresses {
+  id integer [pk]
+  user_id integer
+  street_one varchar
+  street_two varchar
+  city varchar
+  state varchar
+  zip integer
+}
+
+Table products {
+  id integer [pk]
+  name varchar
+  description text
+  category_id varchar [Ref: > categories.id]
+  rating integer
+  price money 
+}
+
+Table carts {
+  id index
+  username varchar [ref: - users.username]
+}
+
+Table orders {
+  number integer [pk]
+  date_created datetime
+  status varchar
+
+  customer_id varchar [ref: > users.username]
+  Note: 'Status can be: "submitted" "shipped" or "fulfilled"'
+}
+
+Table categories {
+  id varchar [pk]
+  category_string varchar
+}
+
+Table product_images {
+  id varchar [pk]
+  product_id integer [Ref: > products.id]
+  path varchar unique
+
+  Note: "Separate table to allow for muliple images for each product."
+}
+
+
+Table products_carts {
+  product_id varchar [ref: > products.id]
+  cart_id varchar [ref: > carts.id]
+}
+
+Table products_orders {
+  product_id varchar [ref: > products.id]
+  order_number integer [ref: > orders.number]
+}
+
+Table users_addresses {
+  user_id integer [ref: > users.id]
+  address_id integer [ref: > addresses.id]
+}
+
