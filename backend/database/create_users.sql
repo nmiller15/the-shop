@@ -55,11 +55,11 @@ CREATE ROLE p_categories_read;
 CREATE ROLE p_categories_write; 
 CREATE ROLE p_categories_delete;
 GRANT SELECT ON categories TO p_categories_read;
-GRANT INSERT, SELECT ON categories TO p_categories_write;
+GRANT INSERT, UPDATE ON categories TO p_categories_write;
 GRANT DELETE ON categories TO p_categories_delete;
 
 
--- product_images
+-- products_images
 GRANT SELECT ON products_images TO p_products_read;
 GRANT INSERT, UPDATE ON products_images TO p_products_write;
 GRANT USAGE ON SEQUENCE products_images_id_seq TO p_products_write;
