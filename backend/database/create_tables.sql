@@ -53,12 +53,12 @@ CREATE TABLE "product_images" (
 );
 
 CREATE TABLE "products_carts" (
-  "product_id" varchar,
-  "cart_id" varchar
+  "product_id" integer,
+  "cart_id" integer
 );
 
 CREATE TABLE "products_orders" (
-  "product_id" varchar,
+  "product_id" integer,
   "order_number" integer
 );
 
