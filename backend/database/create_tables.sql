@@ -1,5 +1,5 @@
 CREATE TABLE "users" (
-  "id" integer PRIMARY KEY,
+  "id" serial PRIMARY KEY,
   "username" varchar UNIQUE,
   "password" varchar,
   "first_name" varchar,
@@ -9,7 +9,7 @@ CREATE TABLE "users" (
 );
 
 CREATE TABLE "addresses" (
-  "id" integer PRIMARY KEY,
+  "id" serial PRIMARY KEY,
   "user_id" integer,
   "street_one" varchar,
   "street_two" varchar,
@@ -19,7 +19,7 @@ CREATE TABLE "addresses" (
 );
 
 CREATE TABLE "products" (
-  "id" integer PRIMARY KEY,
+  "id" serial PRIMARY KEY,
   "name" varchar,
   "description" text,
   "category_id" varchar,
@@ -29,12 +29,12 @@ CREATE TABLE "products" (
 );
 
 CREATE TABLE "carts" (
-  "id" index,
+  "id" serial PRIMARY KEY,
   "username" varchar
 );
 
 CREATE TABLE "orders" (
-  "number" integer PRIMARY KEY,
+  "number" serial PRIMARY KEY,
   "date_created" datetime,
   "status" varchar,
   "address_id" integer,
@@ -47,7 +47,7 @@ CREATE TABLE "categories" (
 );
 
 CREATE TABLE "product_images" (
-  "id" varchar PRIMARY KEY,
+  "id" serial PRIMARY KEY,
   "product_id" integer,
   "path" varchar UNIQUE
 );
