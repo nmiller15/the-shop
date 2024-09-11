@@ -36,7 +36,7 @@ CREATE TABLE "carts" (
 CREATE TABLE "orders" (
   "number" serial PRIMARY KEY,
   "date_created" datetime,
-  "status" varchar,
+  "status" varchar DEFAULT "submitted",
   "address_id" integer,
   "customer_id" varchar
 );
@@ -53,18 +53,24 @@ CREATE TABLE "product_images" (
 );
 
 CREATE TABLE "products_carts" (
+  "id" serial PRIMARY KEY,
   "product_id" integer,
-  "cart_id" integer
+  "cart_id" integer,
+  "quantity" integer NOT NULL DEFAULT 1;
 );
 
 CREATE TABLE "products_orders" (
+  "id" serial PRIMARY KEY,
   "product_id" integer,
-  "order_number" integer
+  "order_number" integer,
+  "quantity" integer NOT NULL DEFAULT 1;
+  UNIQUE (product_id, order_number)
 );
 
 CREATE TABLE "users_addresses" (
   "user_id" integer,
-  "address_id" integer
+  "address_id" integer,
+  PRIMARY KEY (user_id, address_id)
 );
 
 COMMENT ON TABLE "users" IS 'Join to carts on username';

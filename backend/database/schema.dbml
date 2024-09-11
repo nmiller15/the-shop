@@ -1,7 +1,7 @@
 // Initial Tables for 'shop'
 
 Table users {
-  id integer [pk]
+  id integer [pk, incrememnt]
   username varchar unique
   password varchar
   first_name varchar
@@ -13,7 +13,7 @@ Table users {
 }
 
 Table addresses {
-  id integer [pk]
+  id integer [pk, increment]
   user_id integer
   street_one varchar
   street_two varchar
@@ -23,7 +23,7 @@ Table addresses {
 }
 
 Table products {
-  id integer [pk]
+  id integer [pk, increment]
   name varchar
   description text
   category_id varchar [Ref: > categories.id]
@@ -33,12 +33,12 @@ Table products {
 }
 
 Table carts {
-  id index
+  id integer [pk, increment]
   username varchar [ref: - users.username]
 }
 
 Table orders {
-  number integer [pk]
+  number integer [pk, increment]
   date_created datetime
   status varchar
   address_id integer [ref: > addresses.id]
@@ -52,7 +52,7 @@ Table categories {
 }
 
 Table product_images {
-  id varchar [pk]
+  id integer [pk, increment]
   product_id integer [Ref: > products.id]
   path varchar unique
 
@@ -61,17 +61,33 @@ Table product_images {
 
 
 Table products_carts {
+  id integer [pk, increment]
   product_id varchar [ref: > products.id]
   cart_id varchar [ref: > carts.id]
+  quantity integer [not null, default: 1]
+
+  indexes {
+    (product_id, cart_id) [unique]
+  }
 }
 
 Table products_orders {
+  id integer [pk, increment]
   product_id varchar [ref: > products.id]
   order_number integer [ref: > orders.number]
+  quantity integer [not null, default: 1]
+
+  indexes {
+    (product_id, order_number) [unique]
+  }
 }
 
 Table users_addresses {
   user_id integer [ref: > users.id]
   address_id integer [ref: > addresses.id]
+
+  indexes {
+    (user_id, address_id) [unique]
+  }
 }
 

@@ -36,7 +36,7 @@ CREATE ROLE p_carts_write;
 CREATE ROLE p_carts_delete;
 GRANT SELECT ON carts TO p_carts_read;
 GRANT INSERT, UPDATE ON carts TO p_carts_write;
-GRANT USAGE ON SEQUENCE carts_id_seq TO p_carts_write;
+GRANT USAGE ON SEQUENCE carts_id_seq, products_carts_id_seq TO p_carts_write;
 GRANT DELETE ON carts TO p_carts_delete;
 
 
@@ -47,7 +47,7 @@ CREATE ROLE p_orders_write;
 GRANT SELECT ON orders TO p_orders_read;
 GRANT UPDATE (status) ON orders TO p_orders_write_restricted;
 GRANT INSERT, UPDATE ON orders TO p_orders_write;
-GRANT USAGE ON SEQUENCE orders_number_seq TO p_orders_write;
+GRANT USAGE ON SEQUENCE orders_number_seq, products_orders_id_seq TO p_orders_write;
 
 
 -- categories
