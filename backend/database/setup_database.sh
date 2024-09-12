@@ -142,17 +142,17 @@ sudo cp "$PG_GBA_CONF" "${PG_HBA_CONF}.bak"
 echo "Backup created $PG_HBA_CONF.bak"
 
 echo "Adjusting permissions for u_user_api..."
-echo "host $DB_NAME u_user_api 0.0.0.0/0 md5" >> $PG_HBA_CONF
-echo "local $DB_NAME u_user_api 0.0.0.0/0 md5" >> $PG_HBA_CONF
+sudo echo "host $DB_NAME u_user_api 0.0.0.0/0 md5" >> $PG_HBA_CONF
+sudo echo "local $DB_NAME u_user_api 0.0.0.0/0 md5" >> $PG_HBA_CONF
 
 echo "Adjusting permissions for u_staff_api..."
-echo "host $DB_NAME u_staff_api 0.0.0.0/0 md5" >> $PG_HBA_CONF
-echo "local $DB_NAME u_staff_api 0.0.0.0/0 md5" >> $PG_HBA_CONF
+sudo echo "host $DB_NAME u_staff_api 0.0.0.0/0 md5" >> $PG_HBA_CONF
+sudo echo "local $DB_NAME u_staff_api 0.0.0.0/0 md5" >> $PG_HBA_CONF
 
 echo "Adjusting permissions for u_admin..."
-echo "local $DB_NAME u_admin 0.0.0.0/0 md5" >> $PG_HBA_CONF
+sudo echo "local $DB_NAME u_admin 0.0.0.0/0 md5" >> $PG_HBA_CONF
 
 echo "Adjusting permissions for u_super..."
-echo "local $DB_NAME u_super 0.0.0.0/0 md5" >> $PG_HBA_CONF
+sudo echo "local $DB_NAME u_super 0.0.0.0/0 md5" >> $PG_HBA_CONF
 
 echo "Database setup completed."
