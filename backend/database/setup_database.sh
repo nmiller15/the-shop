@@ -117,10 +117,10 @@ echo "Running create_roles.sql..."
 psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f create_roles.sql --echo-all
 
 # Collect passwords for the users
-read -sp "Enter password for the user API connection: " USER_API_PASS
-read -sp "Enter password for the staff API connection: " STAFF_API_PASS
-read -sp "Enter password for the admin user, u_admin: " ADMIN_PASS
-read -sp "Enter password for the super user, u_super: " SUPER_PASS
+read -sp "Enter password for the user API connection: " USER_API_PASS; echo
+read -sp "Enter password for the staff API connection: " STAFF_API_PASS; echo
+read -sp "Enter password for the admin user, u_admin: " ADMIN_PASS; echo
+read -sp "Enter password for the super user, u_super: " SUPER_PASS; echo
 
 # Set user passwords
 echo "Setting passwords for database roles..."
@@ -138,7 +138,7 @@ unset POSTGRES_PASSWORD
 
 echo "Creating a backup of pg_hba.conf..."
 PG_HBA_CONF="/etc/postgresql/16/main/pg_hba.conf"
-sudo cp "$PG_GBA_CONF" "${PG_HBA_CONF}.bak"
+sudo cp $PG_GBA_CONF $PG_HBA_CONF.bak
 echo "Backup created $PG_HBA_CONF.bak"
 
 echo "Adjusting permissions for u_user_api..."
