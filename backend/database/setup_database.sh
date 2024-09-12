@@ -92,10 +92,19 @@ if [ "$install" == "true" ]; then
     sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '${POSTGRES_PASSWORD}';"
     DB_PASSWORD=$POSTGRES_PASSWORD
   fi
+else 
+  echo 
+  read -sp "Enter the password for your postgres superuser: " CUSTOM_POSTGRES_PASS
+  ECHO
+  DB_PASSWORD=$CUSTOM_POSTGRES_PASS
 fi
 
 # Export the password so that psql can use it
 export PGPASSWORD=$DB_PASSWORD
+
+echo "Creating $DB_NAME database..."
+echo
+sudo -u postgres psql -c "CREATE DATABASE '${DB_NAME}';" --echo-all
 
 # Check if the SQL files exist
 if [ ! -f create_tables.sql ]; then
