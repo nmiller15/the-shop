@@ -56,9 +56,9 @@ GRANT INSERT, UPDATE ON categories TO p_categories_write;
 GRANT DELETE ON categories TO p_categories_delete;
 
 -- products_images
-GRANT SELECT ON products_images TO p_products_read;
-GRANT INSERT, UPDATE ON products_images TO p_products_write;
-GRANT USAGE ON SEQUENCE products_images_id_seq TO p_products_write;
+GRANT SELECT ON product_images TO p_products_read;
+GRANT INSERT, UPDATE ON product_images TO p_products_write;
+GRANT USAGE ON SEQUENCE product_images_id_seq TO p_products_write;
 
 -- products_carts
 GRANT SELECT ON products_carts TO p_carts_read;
