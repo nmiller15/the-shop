@@ -138,6 +138,7 @@ unset POSTGRES_PASSWORD
 
 echo "Creating a backup of pg_hba.conf..."
 PG_HBA_CONF="/etc/postgresql/16/main/pg_hba.conf"
+sudo chmod 666 $PG_HBA_CONF
 sudo cp $PG_HBA_CONF $PG_HBA_CONF.bak
 echo "Backup created $PG_HBA_CONF.bak"
 
@@ -154,5 +155,7 @@ sudo -u postgres echo "local $DB_NAME u_admin 0.0.0.0/0 md5" >> $PG_HBA_CONF
 
 echo "Adjusting permissions for u_super..."
 sudo -u postgres echo "local $DB_NAME u_super 0.0.0.0/0 md5" >> $PG_HBA_CONF
+
+sudo chmod 640 $PG_HBA_CONF
 
 echo "Database setup completed."
