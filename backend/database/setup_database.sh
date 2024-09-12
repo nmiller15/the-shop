@@ -112,9 +112,14 @@ fi
 # Run SQL files
 echo "Running create_tables.sql..."
 psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f create_tables.sql --echo-all
+echo "############################"
+echo "Database tables created."
 
 echo "Running create_roles.sql..."
 psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f create_roles.sql --echo-all
+echo "############################"
+echo "Database roles created."
+echo "Set passwords for database users..."
 
 # Collect passwords for the users
 read -sp "Enter password for the user API connection: " USER_API_PASS; echo
