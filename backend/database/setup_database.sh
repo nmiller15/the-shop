@@ -138,7 +138,7 @@ unset POSTGRES_PASSWORD
 
 echo "Creating a backup of pg_hba.conf..."
 PG_HBA_CONF="/etc/postgresql/16/main/pg_hba.conf"
-sudo cp $PG_GBA_CONF $PG_HBA_CONF.bak
+sudo cp $PG_HBA_CONF $PG_HBA_CONF.bak
 echo "Backup created $PG_HBA_CONF.bak"
 
 echo "Adjusting permissions for u_user_api..."
