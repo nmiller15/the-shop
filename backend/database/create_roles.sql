@@ -1,4 +1,3 @@
--- GRANT USAGE ON SCHEMA public TO groups
 -- CREATE PERMISSIONS
 
 -- users
@@ -119,6 +118,8 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO g_super;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT, UPDATE ON SEQUENCES TO g_super;
 GRANT CREATE ON SCHEMA public TO g_super;
 
+GRANT USAGE ON SCHEMA public TO g_users, g_staff, g_admin, g_super;
+
 -- CREATE USERS
 CREATE ROLE u_user_api WITH LOGIN;
 GRANT g_users TO u_user_api;
@@ -128,40 +129,3 @@ CREATE ROLE u_admin WITH LOGIN;
 GRANT g_admin TO u_admin;
 CREATE ROLE u_super WITH LOGIN;
 GRANT g_super TO u_super;
-
-
-
-
--- User role
-  -- read all products and related
-  -- read own orders
-  -- read and write and delete on own cart
-  -- read and write and delete on own addresses
-  -- read on own products_carts and products_orders
-  -- read on own users_addresses
-  -- delete on own user
- 
--- Order fulfillment role
-  -- all user permissions
-  -- read all orders, write on status column
-  -- read all addresses
-
--- Staff/Marketing role
-  -- all order fulfillment
-  -- read and write on products
-  -- read on all carts
-  -- read and write on all users
-  -- read and write on addresses
-  -- read and write on all orders
-
--- Admin role
-  -- Staff/Marketing
-  -- delete on users
-  -- delete on addresses
-
--- Super User
-  -- CRUD all
-
--- Add permissions on sequences for all write roles
--- Instead of doing row level security, I will protect at the api level
--- I will still use the groups to create different database connections for each type of user.

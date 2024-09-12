@@ -72,13 +72,6 @@ CREATE TABLE "users_addresses" (
   "address_id" integer,
   PRIMARY KEY (user_id, address_id)
 );
-
-COMMENT ON TABLE "users" IS 'Join to carts on username';
-
-COMMENT ON TABLE "orders" IS 'Status can be: "submitted" "shipped" or "fulfilled"';
-
-COMMENT ON TABLE "product_images" IS 'Separate table to allow for muliple images for each product.';
-
 ALTER TABLE "products" ADD FOREIGN KEY ("category_id") REFERENCES "categories" ("id");
 
 ALTER TABLE "carts" ADD FOREIGN KEY ("username") REFERENCES "users" ("username");
