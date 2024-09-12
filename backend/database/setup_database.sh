@@ -51,8 +51,6 @@ while [[ "$#" -gt 0 ]]; do
   esac
 done
 
-echo
-
 ###########################################
 #
 # Make sure that psql is installed
@@ -76,26 +74,20 @@ else
   sudo apt install -y postgresql
 fi
 
-echo
 echo "... enabling PostgreSQL service"
 sudo systemctl enable postgresql
-echo
 echo "... starting PostgreSQL service"
 sudo systemctl start postgresql
 
 # Set the postgres superuser password if db_user is postgres and the script installed psql
 if [ "$install" == "true" ]; then
   if [ "$DB_USER" == "postgres" ]; then
-    echo
     read -sp "Enter a password for the postgres superuser: " POSTGRES_PASSWORD
-    echo
     sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '${POSTGRES_PASSWORD}';"
     DB_PASSWORD=$POSTGRES_PASSWORD
   fi
 else 
-  echo 
   read -sp "Enter the password for your postgres superuser: " CUSTOM_POSTGRES_PASS
-  ECHO
   DB_PASSWORD=$CUSTOM_POSTGRES_PASS
 fi
 
@@ -103,8 +95,7 @@ fi
 export PGPASSWORD=$DB_PASSWORD
 
 echo "Creating $DB_NAME database..."
-echo
-sudo -u postgres psql -c "CREATE DATABASE '${DB_NAME}';" --echo-all
+sudo -u postgres psql -c "CREATE DATABASE ${DB_NAME};" --echo-all
 
 # Check if the SQL files exist
 if [ ! -f create_tables.sql ]; then
@@ -118,24 +109,17 @@ if [ ! -f create_roles.sql ]; then
 fi
 
 # Run SQL files
-echo
 echo "Running create_tables.sql..."
 psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f create_tables.sql --echo-all
 
-echo
 echo "Running create_roles.sql..."
 psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f create_roles.sql --echo-all
 
 # Collect passwords for the users
-echo
 read -sp "Enter password for the user API connection: " USER_API_PASS
-echo
 read -sp "Enter password for the staff API connection: " STAFF_API_PASS
-echo
 read -sp "Enter password for the admin user, u_admin: " ADMIN_PASS
-echo
 read -sp "Enter password for the super user, u_super: " SUPER_PASS
-echo
 
 # Set user passwords
 echo "... setting passwords for database roles."
@@ -143,7 +127,6 @@ sudo -u postgres psql -c "ALTER ROLE u_user_api WITH PASSWORD '${USER_API_PASS}'
 sudo -u postgres psql -c "ALTER ROLE u_staff_api WITH PASSWORD '${STAFF_API_PASS}';"
 sudo -u postgres psql -c "ALTER USER u_admin WITH PASSWORD '${ADMIN_PASS}';"
 sudo -u postgres psql -c "ALTER USER u_super WITH PASSWORD '${SUPER_PASS}';"
-echo
 
 echo "... setting environment variables for API access."
 export USER_API_PASS
