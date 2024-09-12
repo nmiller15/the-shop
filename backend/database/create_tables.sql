@@ -4,7 +4,7 @@ CREATE TABLE "users" (
   "password" varchar,
   "first_name" varchar,
   "last_name" varchar,
-  "date_created" datetime,
+  "date_created" timestamp,
   "is_admin" boolean
 );
 
@@ -24,7 +24,7 @@ CREATE TABLE "products" (
   "description" text,
   "category_id" varchar,
   "rating" integer,
-  "price" money
+  "price" money,
   "active" boolean
 );
 
@@ -35,7 +35,7 @@ CREATE TABLE "carts" (
 
 CREATE TABLE "orders" (
   "number" serial PRIMARY KEY,
-  "date_created" datetime,
+  "date_created" timestamp,
   "status" varchar DEFAULT "submitted",
   "address_id" integer,
   "customer_id" varchar
@@ -56,14 +56,14 @@ CREATE TABLE "products_carts" (
   "id" serial PRIMARY KEY,
   "product_id" integer,
   "cart_id" integer,
-  "quantity" integer NOT NULL DEFAULT 1;
+  "quantity" integer NOT NULL DEFAULT 1
 );
 
 CREATE TABLE "products_orders" (
   "id" serial PRIMARY KEY,
   "product_id" integer,
   "order_number" integer,
-  "quantity" integer NOT NULL DEFAULT 1;
+  "quantity" integer NOT NULL DEFAULT 1
   UNIQUE (product_id, order_number)
 );
 
