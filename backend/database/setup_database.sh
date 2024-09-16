@@ -96,7 +96,7 @@ fi
 export PGPASSWORD=$DB_PASSWORD
 
 echo "Creating $DB_NAME database..."
-sudo -u postgres psql -c "CREATE DATABASE ${DB_NAME};" --echo-all
+sudo -u $DB_USER psql -c "CREATE DATABASE ${DB_NAME};" --echo-all
 
 # Check if the SQL files exist
 if [ ! -f create_tables.sql ]; then
