@@ -1,0 +1,152 @@
+openapi: 3.0.0
+info:
+  description: |
+    This is an API for an eCommerce application called "the shop". the shop does not actually sell items, it is a personal project that is a fully functional eCommerce application that could be loaded with real products and rebranded into a legitimate site.
+  version: "0.1.0"
+  title: "the shop API"
+  contact:
+    email: mail@nolanmiller.me
+  license:
+    name: Apache 2.0
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/NOLANMILLER77/the_shop/1.0.0
+tags:
+  - name: authentication
+    description: Log in and out of your account
+  - name: user
+    description: Operations about user
+  - name: product
+    description: Operations about product
+  - name: order
+    description: Operations about order
+  - name: cart
+    description: Operations about cart
+paths:
+  /login:
+    post:
+      tags:
+        - authentication
+      summary: Access a user account context
+      operationId: login
+      responses:
+        "405":
+          description: Invalid input
+      requestBody:
+        $ref: "#/components/requestBodies/login"
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        password:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        dateCreated:
+          type: string
+        accessLevel:
+          type: integer
+        addresses:
+          type: array
+          items:
+            $ref: "#/components/schemas/Address"
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+        rating:
+          type: number
+        price:
+          type: number
+        active:
+          type: boolean
+        images:
+          type: array
+          items:
+            type: object
+            properties:
+              imageId:
+                type: integer
+              path:
+                type: string
+              sequence:
+                type: integer
+    Address:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        streetOne:
+          type: string
+        streetTwo:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: integer
+    Cart:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        totalCost:
+          type: number
+        contents:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        dateCreated:
+          type: string
+        status:
+          type: string
+        billingAddress:
+          $ref: "#/components/schemas/Address"
+        shippingAddress:
+          $ref: "#/components/schemas/Address"
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
