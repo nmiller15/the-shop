@@ -23,7 +23,7 @@ CREATE TABLE "products" (
   "name" varchar,
   "description" text,
   "category_id" varchar,
-  "rating" integer,
+  "rating" numeric (2, 1),
   "price" money,
   "active" boolean
 );
