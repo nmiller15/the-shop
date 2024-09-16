@@ -22,15 +22,17 @@ Table addresses {
   zip integer
 }
 
+
 Table products {
   id integer [pk, increment]
   name varchar
   description text
-  category_id varchar [Ref: > categories.id]
-  rating integer
+  category_id varchar
+  rating numeric(2, 1)
   price money
-  active bool
+  active boolean
 }
+
 
 Table carts {
   id integer [pk, increment]
@@ -53,11 +55,11 @@ Table categories {
 
 Table product_images {
   id integer [pk, increment]
-  product_id integer [Ref: > products.id]
-  path varchar unique
-
-  Note: "Separate table to allow for muliple images for each product."
+  sequence integer
+  product_id integer
+  path varchar [unique]
 }
+
 
 
 Table products_carts {
