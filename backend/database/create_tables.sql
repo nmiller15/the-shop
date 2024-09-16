@@ -48,6 +48,7 @@ CREATE TABLE "categories" (
 
 CREATE TABLE "product_images" (
   "id" serial PRIMARY KEY,
+  "sequence" integer,
   "product_id" integer,
   "path" varchar UNIQUE
 );
