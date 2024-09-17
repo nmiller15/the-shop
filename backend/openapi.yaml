@@ -31,11 +31,15 @@ paths:
         - authentication
       summary: Access a user account context
       operationId: login
+
       responses:
-        "405":
-          description: Invalid input
-      requestBody:
-        $ref: "#/components/requestBodies/login"
+        "200":
+          description: Successful operation
+
+        "400":
+          description: Invalid request format
+        "404":
+          description: Username not found
 
 components:
   schemas:
@@ -150,3 +154,24 @@ components:
           type: string
         message:
           type: string
+  securitySchemes:
+    userAuth:
+      type: http
+      description: Authentication identifying users
+      scheme: bearer
+      bearerFormat: JWT
+    staffAuth:
+      type: http
+      description: Authentication identifying a staff member
+      scheme: bearer
+      bearerFormat: JWT
+    adminAuth:
+      type: http
+      description: Authentication identifying an administrator
+      scheme: bearer
+      bearerFormat: JWT
+    csrf:
+      type: http
+      description: Unique session-specific token stored with the client to prevent cross-site request forgery
+      scheme: bearer
+      bearerFormat: UUID
