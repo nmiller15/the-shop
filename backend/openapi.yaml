@@ -31,16 +31,223 @@ paths:
         - authentication
       summary: Access a user account context
       operationId: login
-
+      requestBody:
+        description: Identifying user information
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
       responses:
         "200":
           description: Successful operation
-
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
         "400":
           description: Invalid request format
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
         "404":
-          description: Username not found
-
+          $ref: "#/components/responses/NotFound"
+  /logout:
+    post:
+      tags:
+        - authentication
+      summary: Remove a user account context and session
+      operationId: logout
+      responses:
+        "204":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+  /user:
+    get:
+      tags:
+        - user
+      summary: Get all users
+      description: Get all users, only accessible by staff and administrator users.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    post:
+      tags:
+        - user
+      summary: Add a new user
+      operationId: addUser
+      requestBody:
+        description: Username and password must be provided.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "201":
+          description: Successful creation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    $ref: "#/components/schemas/User"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
+  /user/{id}:
+    get:
+      tags:
+        - user
+      summary: Get user by id
+      description: Provide a user id and get the information for the user, protected by session ids and cookies. Can only retrieve own information unless staff or administrator.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathUserId"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    $ref: "#/components/schemas/User"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    put:
+      tags:
+        - user
+      summary: Edit user by id
+      description: "Edit a user by providing valid User properties in the request body.\n Note: A user's properties can only be editied by the user themself or an administrator. The \"role\" property can only be edited by an administrator. The complete User model is not required in the request body."
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathUserId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "201":
+          description: Successful operation, returns the updated user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      tags:
+        - user
+      summary: Remove a user by id
+      description: "Remove a user by providing the id of the user. The requestor must be able to authenticate as an administrator, or the user with a matching id. Upon the request, a token will be sent back to the client in a protected cookie, the response must be validated using the token. (See Web Dev Simplified CSRF Token Video and implement similarly, or perhaps just provide the CSRF token.)"
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathUserId"
+      responses:
+        "204":
+          description: No content, removed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /user/{username}:
+    get:
+      tags:
+        - user
+      summary: Get a user by the user id
+      description: "Get non-sensitive profile information for a user from the username. DOES NOT INCLUDE PASSWORD, OR ADDRESSES."
+      parameters:
+        - name: username
+          description: the unique username selected by a user at account creation
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                      firstName:
+                        type: string
+                      lastName:
+                        type: string
+                      dateCreated:
+                        type: string
+                      role:
+                        type: string
+        "404":
+          $ref: "#/components/responses/NotFound"
 components:
   schemas:
     User:
@@ -58,8 +265,8 @@ components:
           type: string
         dateCreated:
           type: string
-        accessLevel:
-          type: integer
+        role:
+          type: string
         addresses:
           type: array
           items:
@@ -137,13 +344,6 @@ components:
           $ref: "#/components/schemas/Address"
         shippingAddress:
           $ref: "#/components/schemas/Address"
-    LoginRequest:
-      type: object
-      properties:
-        username:
-          type: string
-        password:
-          type: string
     ApiResponse:
       type: object
       properties:
@@ -154,24 +354,43 @@ components:
           type: string
         message:
           type: string
-  securitySchemes:
-    userAuth:
-      type: http
-      description: Authentication identifying users
-      scheme: bearer
-      bearerFormat: JWT
-    staffAuth:
-      type: http
-      description: Authentication identifying a staff member
-      scheme: bearer
-      bearerFormat: JWT
-    adminAuth:
-      type: http
-      description: Authentication identifying an administrator
-      scheme: bearer
-      bearerFormat: JWT
-    csrf:
-      type: http
-      description: Unique session-specific token stored with the client to prevent cross-site request forgery
-      scheme: bearer
-      bearerFormat: UUID
+    NoContent:
+      type: object
+      properties:
+        response:
+          $ref: "#/components/schemas/ApiResponse"
+  parameters:
+    sessionId:
+      name: session_id
+      description: String generated by the server, sent in a cookie by the login operation.
+      in: cookie
+      required: true
+      schema:
+        type: string
+    csrfToken:
+      name: csrf_token
+      description: Random token generated by the server, sent in a cookie by the login operation.
+      in: cookie
+      required: true
+      schema:
+        type: string
+    pathUserId:
+      name: id
+      description: The id assigned to a user
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    NotFound:
+      description: User not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NoContent"
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NoContent"
