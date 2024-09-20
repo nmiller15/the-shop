@@ -32,6 +32,7 @@ paths:
       summary: Access a user account context
       operationId: login
       requestBody:
+        required: true
         description: Identifying user information
         content:
           application/json:
@@ -50,13 +51,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/NoContent"
         "400":
-          description: Invalid request format
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NoContent"
+          $ref: "#/components/responses/BadRequestBody"
         "404":
-          $ref: "#/components/responses/NotFound"
+          $ref: "#/components/responses/UserNotFound"
   /logout:
     post:
       tags:
@@ -105,6 +102,7 @@ paths:
       summary: Add a new user
       operationId: addUser
       requestBody:
+        required: true
         description: Username and password must be provided.
         content:
           application/json:
@@ -157,7 +155,7 @@ paths:
                   content:
                     $ref: "#/components/schemas/User"
         "404":
-          $ref: "#/components/responses/NotFound"
+          $ref: "#/components/responses/UserNotFound"
     put:
       tags:
         - user
@@ -169,6 +167,8 @@ paths:
         - $ref: "#/components/parameters/csrfToken"
         - $ref: "#/components/parameters/pathUserId"
       requestBody:
+        required: true
+        description: An object with valid user properties
         content:
           application/json:
             schema:
@@ -185,10 +185,12 @@ paths:
                     $ref: "#/components/schemas/ApiResponse"
                   content:
                     $ref: "#/components/schemas/User"
+        "400":
+          $ref: "#/components/responses/BadRequestBody"
         "401":
           $ref: "#/components/responses/Unauthorized"
         "404":
-          $ref: "#/components/responses/NotFound"
+          $ref: "#/components/responses/UserNotFound"
     delete:
       tags:
         - user
@@ -213,7 +215,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/NoContent"
         "404":
-          $ref: "#/components/responses/NotFound"
+          $ref: "#/components/responses/UserNotFound"
   /user/{username}:
     get:
       tags:
@@ -222,12 +224,7 @@ paths:
       operationId: getUserByUsername
       description: "Get non-sensitive profile information for a user from the username. DOES NOT INCLUDE PASSWORD, OR ADDRESSES."
       parameters:
-        - name: username
-          description: the unique username selected by a user at account creation
-          in: path
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/pathUsername"
       responses:
         "200":
           description: Successful operation
@@ -252,7 +249,7 @@ paths:
                       role:
                         type: string
         "404":
-          $ref: "#/components/responses/NotFound"
+          $ref: "#/components/responses/UserNotFound"
   /product:
     get:
       tags:
@@ -286,16 +283,12 @@ paths:
       summary: Add a new product
       operationId: addProduct
       requestBody:
-        description: Username and password must be provided.
+        description: A product object must be provided
+        required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                password:
-                  type: string
+              $ref: "#/components/schemas/Product"
       parameters:
         - $ref: "#/components/parameters/sessionId"
         - $ref: "#/components/parameters/csrfToken"
@@ -312,11 +305,7 @@ paths:
                   content:
                     $ref: "#/components/schemas/User"
         "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NoContent"
+          $ref: "#/components/responses/BadRequestBody"
   /product/{id}:
     get:
       tags:
@@ -339,7 +328,7 @@ paths:
                   content:
                     $ref: "#/components/schemas/Product"
         "404":
-          $ref: "#/components/responses/NotFound"
+          $ref: "#/components/responses/ProductNotFound"
     put:
       tags:
         - product
@@ -351,6 +340,8 @@ paths:
         - $ref: "#/components/parameters/csrfToken"
         - $ref: "#/components/parameters/pathProductId"
       requestBody:
+        description: An object with valid product fields and values
+        required: true
         content:
           application/json:
             schema:
@@ -367,10 +358,12 @@ paths:
                     $ref: "#/components/schemas/ApiResponse"
                   content:
                     $ref: "#/components/schemas/Product"
+        "400":
+          $ref: "#/components/responses/BadRequestBody"
         "401":
           $ref: "#/components/responses/Unauthorized"
         "404":
-          $ref: "#/components/responses/NotFound"
+          $ref: "#/components/responses/ProductNotFound"
   /product/{id}/image:
     post:
       tags:
@@ -383,11 +376,13 @@ paths:
         - $ref: "#/components/parameters/csrfToken"
         - $ref: "#/components/parameters/pathProductId"
         - name: sequence
-          description: Provide a number to decide where this image will be displayed on the product page. Defaults to last.
+          description: Provide a number to decide where this image will be displayed on the product page. No value will add to the last in the sequence
           in: query
           schema:
             type: integer
       requestBody:
+        description: A file encoded as jpeg or png
+        required: true
         content:
           image/jpeg: {}
           image/png: {}
@@ -403,22 +398,26 @@ paths:
                     $ref: "#/components/schemas/ApiResponse"
                   content:
                     $ref: "#/components/schemas/Product"
+        "400":
+          $ref: "#/components/responses/BadRequestBody"
         "401":
           $ref: "#/components/responses/Unauthorized"
         "404":
-          $ref: "#/components/responses/NotFound"
+          $ref: "#/components/responses/ProductNotFound"
   /product/{id}/reorder-images:
     put:
       tags:
         - product
       summary: Reorder product images
-      operationId: reorderProductImage
-      description: 'Return a product''s "images" property with the new order and the endpoint returns the updated product. Note: The "path" property is not required.'
+      operationId: reorderProductImages
+      description: 'Supply a product''s "images" property with the new order and the endpoint returns the updated product. Note: The "path" property is not required.'
       parameters:
         - $ref: "#/components/parameters/sessionId"
         - $ref: "#/components/parameters/csrfToken"
         - $ref: "#/components/parameters/pathProductId"
       requestBody:
+        description: The \"images\" property of a product. An array of image objects.
+        required: true
         content:
           application/json:
             schema:
@@ -447,10 +446,187 @@ paths:
                     $ref: "#/components/schemas/ApiResponse"
                   content:
                     $ref: "#/components/schemas/Product"
+        "400":
+          $ref: "#/components/responses/BadRequestBody"
         "401":
           $ref: "#/components/responses/Unauthorized"
         "404":
-          $ref: "#/components/responses/NotFound"
+          $ref: "#/components/responses/ProductNotFound"
+  /order:
+    get:
+      tags:
+        - order
+      summary: Get all orders
+      description: Return a list of all orders
+      operationId: getAllOrders
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - name: unfulfilled
+          in: query
+          description: Send a true value with this query parameter to filter results to only the orders that still require action by the staff. This operation can only be performed by staff members and administrators.
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Order"
+        "204":
+          description: Successful operation, no orders
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    post:
+      tags:
+        - order
+      summary: Add an order
+      operationId: addOrder
+      description: Provide an order record to add to the database. Any address must be a match to the username provided. Users can only create orders for themselves, or create orders as a staff or administrator. The \"totalCost\" will be generated dynamically by the server and can only be changed by an administrator.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+      requestBody:
+        description: A valid order object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Order"
+      responses:
+        "201":
+          description: Succesfully added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    $ref: "#/components/schemas/Order"
+        "400":
+          $ref: "#/components/responses/BadRequestBody"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/UserNotFound"
+  /order/{id}:
+    get:
+      tags:
+        - order
+      summary: Get order by id
+      operationId: getOrderById
+      description: Provide an order id, aka order number, and retrieve all the details about that order. Orders can only be retrieved by owners, staff and administrators.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathOrderId"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    $ref: "#/components/schemas/Order"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/OrderNotFound"
+    put:
+      tags:
+        - order
+      summary: Edit order by id
+      operationId: updateOrderById
+      description: Provide updated fields of an order object to update the database and return an updated order object. Editable fields are shown in the response body below. These fields can only be edited by an owner, staff or administrator. Total cost can only be edited by an administrator.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathOrderId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                shippingAddress:
+                  $ref: "#/components/schemas/Address"
+                status:
+                  type: string
+                totalCost:
+                  type: number
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    $ref: "#/components/schemas/Order"
+        "400":
+          $ref: "#/components/responses/BadRequestBody"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/OrderNotFound"
+  /order/{username}:
+    get:
+      tags:
+        - order
+      summary: Get a users orders
+      operationId: getUserOrders
+      description: Provide a username and retrieve all orders associated with a user. Operation can only be performed by an owner, staff or administrator.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathUsername"
+        - name: includeInactive
+          description: true value returns all order history, false returns only orders with incomplete status
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Order"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/OrderNotFound"
 components:
   schemas:
     User:
@@ -543,10 +719,16 @@ components:
           type: string
         status:
           type: string
+        totalCost:
+          type: number
         billingAddress:
           $ref: "#/components/schemas/Address"
         shippingAddress:
           $ref: "#/components/schemas/Address"
+        contents:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
     ApiResponse:
       type: object
       properties:
@@ -565,35 +747,79 @@ components:
   parameters:
     sessionId:
       name: session_id
-      description: String generated by the server, sent in a cookie by the login operation.
+      description: string generated by the server, sent in a cookie by the login operation
       in: cookie
       required: true
       schema:
         type: string
     csrfToken:
       name: csrf_token
-      description: Random token generated by the server, sent in a cookie by the login operation.
+      description: random token generated by the server, sent in a cookie by the login operation
       in: cookie
       required: true
       schema:
         type: string
     pathUserId:
       name: id
-      description: The id assigned to a user
+      description: the id assigned to a user
       in: path
       required: true
       schema:
-        type: string
+        type: integer
     pathProductId:
       name: id
-      description: The id assigned to a product
+      description: the id assigned to a product
+      in: path
+      required: true
+      schema:
+        type: integer
+    pathOrderId:
+      name: id
+      description: the id assigned to an order
+      in: path
+      required: true
+      schema:
+        type: integer
+    pathUsername:
+      name: username
+      description: the unique username selected by a user at account creation
       in: path
       required: true
       schema:
         type: string
   responses:
-    NotFound:
+    BadRequestBody:
+      description: Invalid/no request body
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NoContent"
+    ProductNotFound:
+      description: Product not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NoContent"
+    CartNotFound:
+      description: Cart not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NoContent"
+    OrderNotFound:
+      description: Order not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NoContent"
+    UserNotFound:
       description: User not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NoContent"
+    NotFound:
+      description: Resource not found
       content:
         application/json:
           schema:
