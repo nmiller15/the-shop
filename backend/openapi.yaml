@@ -91,9 +91,12 @@ paths:
                   response:
                     $ref: "#/components/schemas/ApiResponse"
                   content:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/User"
+                    type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/User"
         "401":
           $ref: "#/components/responses/Unauthorized"
     post:
@@ -124,7 +127,10 @@ paths:
                   response:
                     $ref: "#/components/schemas/ApiResponse"
                   content:
-                    $ref: "#/components/schemas/User"
+                    type: object
+                    properties:
+                      user:
+                        $ref: "#/components/schemas/User"
         "400":
           description: Bad Request
           content:
@@ -153,7 +159,10 @@ paths:
                   response:
                     $ref: "#/components/schemas/ApiResponse"
                   content:
-                    $ref: "#/components/schemas/User"
+                    type: object
+                    properties:
+                      user:
+                        $ref: "#/components/schemas/User"
         "404":
           $ref: "#/components/responses/UserNotFound"
     put:
@@ -184,7 +193,10 @@ paths:
                   response:
                     $ref: "#/components/schemas/ApiResponse"
                   content:
-                    $ref: "#/components/schemas/User"
+                    type: object
+                    properties:
+                      user:
+                        $ref: "#/components/schemas/User"
         "400":
           $ref: "#/components/responses/BadRequestBody"
         "401":
@@ -238,16 +250,19 @@ paths:
                   content:
                     type: object
                     properties:
-                      username:
-                        type: string
-                      firstName:
-                        type: string
-                      lastName:
-                        type: string
-                      dateCreated:
-                        type: string
-                      role:
-                        type: string
+                      user:
+                        type: object
+                        properties:
+                          username:
+                            type: string
+                          firstName:
+                            type: string
+                          lastName:
+                            type: string
+                          dateCreated:
+                            type: string
+                          role:
+                            type: string
         "404":
           $ref: "#/components/responses/UserNotFound"
   /product:
@@ -274,9 +289,12 @@ paths:
                   response:
                     $ref: "#/components/schemas/ApiResponse"
                   content:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Product"
+                    type: object
+                    properties:
+                      products:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Product"
     post:
       tags:
         - product
@@ -303,7 +321,10 @@ paths:
                   response:
                     $ref: "#/components/schemas/ApiResponse"
                   content:
-                    $ref: "#/components/schemas/User"
+                    type: object
+                    properties:
+                      product:
+                        $ref: "#/components/schemas/Product"
         "400":
           $ref: "#/components/responses/BadRequestBody"
   /product/{id}:
@@ -326,7 +347,10 @@ paths:
                   response:
                     $ref: "#/components/schemas/ApiResponse"
                   content:
-                    $ref: "#/components/schemas/Product"
+                    type: object
+                    properties:
+                      product:
+                        $ref: "#/components/schemas/Product"
         "404":
           $ref: "#/components/responses/ProductNotFound"
     put:
@@ -357,7 +381,10 @@ paths:
                   response:
                     $ref: "#/components/schemas/ApiResponse"
                   content:
-                    $ref: "#/components/schemas/Product"
+                    type: object
+                    properties:
+                      product:
+                        $ref: "#/components/schemas/Product"
         "400":
           $ref: "#/components/responses/BadRequestBody"
         "401":
@@ -397,7 +424,10 @@ paths:
                   response:
                     $ref: "#/components/schemas/ApiResponse"
                   content:
-                    $ref: "#/components/schemas/Product"
+                    type: object
+                    properties:
+                      product:
+                        $ref: "#/components/schemas/Product"
         "400":
           $ref: "#/components/responses/BadRequestBody"
         "401":
@@ -445,7 +475,10 @@ paths:
                   response:
                     $ref: "#/components/schemas/ApiResponse"
                   content:
-                    $ref: "#/components/schemas/Product"
+                    type: object
+                    properties:
+                      product:
+                        $ref: "#/components/schemas/Product"
         "400":
           $ref: "#/components/responses/BadRequestBody"
         "401":
@@ -478,9 +511,12 @@ paths:
                   response:
                     $ref: "#/components/schemas/ApiResponse"
                   content:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Order"
+                    type: object
+                    properties:
+                      orders:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Order"
         "204":
           description: Successful operation, no orders
           content:
@@ -516,7 +552,10 @@ paths:
                   response:
                     $ref: "#/components/schemas/ApiResponse"
                   content:
-                    $ref: "#/components/schemas/Order"
+                    type: object
+                    properties:
+                      order:
+                        $ref: "#/components/schemas/Order"
         "400":
           $ref: "#/components/responses/BadRequestBody"
         "401":
@@ -545,7 +584,10 @@ paths:
                   response:
                     $ref: "#/components/schemas/ApiResponse"
                   content:
-                    $ref: "#/components/schemas/Order"
+                    type: object
+                    properties:
+                      order:
+                        $ref: "#/components/schemas/Order"
         "401":
           $ref: "#/components/responses/Unauthorized"
         "404":
@@ -584,7 +626,10 @@ paths:
                   response:
                     $ref: "#/components/schemas/ApiResponse"
                   content:
-                    $ref: "#/components/schemas/Order"
+                    type: object
+                    properties:
+                      order:
+                        $ref: "#/components/schemas/Order"
         "400":
           $ref: "#/components/responses/BadRequestBody"
         "401":
@@ -620,9 +665,12 @@ paths:
                   response:
                     $ref: "#/components/schemas/ApiResponse"
                   content:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Order"
+                    type: object
+                    properties:
+                      orders:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Order"
         "401":
           $ref: "#/components/responses/Unauthorized"
         "404":
