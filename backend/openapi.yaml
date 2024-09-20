@@ -675,6 +675,373 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "404":
           $ref: "#/components/responses/OrderNotFound"
+  /cart:
+    get:
+      tags:
+        - cart
+      summary: Get all user carts
+      operationId: getAllCarts
+      description: Retrieve all carts that are currently active in the system. This is only accessible by staff and administrators.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    type: object
+                    properties:
+                      carts:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Cart"
+        "204":
+          description: Successful operation, no carts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    post:
+      tags:
+        - cart
+      summary: Create new cart
+      operationId: addCart
+      description: Add a new cart instance. A user may only create a cart for themself.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+      responses:
+        "201":
+          description: Cart created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    type: object
+                    properties:
+                      cart:
+                        $ref: "#/components/schemas/Cart"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /cart/{id}:
+    get:
+      tags:
+        - cart
+      summary: Get cart by id
+      operationId: getCartById
+      description: Provide the id assigned to a cart and retrieve its contents and metadata. Only accessible to owners, staff and administrators.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathCartId"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    type: object
+                    properties:
+                      cart:
+                        $ref: "#/components/schemas/Cart"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/CartNotFound"
+    put:
+      tags:
+        - cart
+      operationId: updateCartById
+      summary: Edit cart by id
+      description: Provide updated properties in an object and receive the updated cart object. This is an administrative endpoint. Only staff and administrators will have access to perform operations.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathCartId"
+      requestBody:
+        description: An object containing properties for the cart to be updated. At least one property must be provided.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Cart"
+      responses:
+        "201":
+          description: "Successful operation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    type: object
+                    properties:
+                      cart:
+                        $ref: "#/components/schemas/Cart"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/CartNotFound"
+    delete:
+      tags:
+        - cart
+      operationId: removeCartById
+      summary: Remove cart by id
+      description: Provide cart id to remove the record of the cart and its contents from the database. This can only be performed by the owner, staff or administrator.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathCartId"
+      responses:
+        "204":
+          description: No content, removed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
+        "404":
+          $ref: "#/components/responses/CartNotFound"
+  /cart/{id}/{productId}:
+    post:
+      tags:
+        - cart
+      operationId: addProductToCartById
+      summary: Add product to cart by id
+      description: Provide id, productId and quantity of the product to add a product to a user cart. A product may only be added to a cart by an owner, staff or administrator.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathCartId"
+        - $ref: "#/components/parameters/pathCartProductId"
+        - $ref: "#/components/parameters/queryCartProductQuantity"
+      responses:
+        "201":
+          description: Cart created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    type: object
+                    properties:
+                      cart:
+                        $ref: "#/components/schemas/Cart"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      tags:
+        - cart
+      operationId: removeProductFromCartById
+      summary: Remove product from cart by id
+      description: Provide id, productId and optional clear option to remove a product from a user cart. A product may only be removed from a cart by an owner, staff or administrator.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathCartId"
+        - $ref: "#/components/parameters/pathCartProductId"
+        - $ref: "#/components/parameters/queryCartProductClear"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    type: object
+                    properties:
+                      cart:
+                        $ref: "#/components/schemas/Cart"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /cart/{username}:
+    get:
+      tags:
+        - cart
+      summary: Get cart by username
+      operationId: getCartByUsername
+      description: Provide the username of a valid user and retrieve the user's cart contents and metadata. Only accessible to owners, staff and administrators.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathUsername"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    type: object
+                    properties:
+                      cart:
+                        $ref: "#/components/schemas/Cart"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/UserNotFound"
+    put:
+      tags:
+        - cart
+      operationId: updateCartByUsername
+      summary: Edit cart by username
+      description: Provide updated properties in an object and receive the updated cart object. This is an administrative endpoint. Only staff and administrators will have access to perform operations.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathUsername"
+      requestBody:
+        description: An object containing properties for the cart to be updated. At least one property must be provided.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Cart"
+      responses:
+        "201":
+          description: "Successful operation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    type: object
+                    properties:
+                      cart:
+                        $ref: "#/components/schemas/Cart"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/UserNotFound"
+    delete:
+      tags:
+        - cart
+      operationId: removeCartByUsername
+      summary: Remove cart by username
+      description: Provide cart user's username to remove the record of the cart and its contents from the database. This can only be performed by the owner, staff or administrator.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathUsername"
+      responses:
+        "204":
+          description: No content, removed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
+        "404":
+          $ref: "#/components/responses/UserNotFound"
+  /cart/{username}/{productId}:
+    post:
+      tags:
+        - cart
+      operationId: addProductToCartByUsername
+      summary: Add product to cart by username
+      description: Provide username, productId and quantity of the product to add a product to a user cart. A product may only be added to a cart by an owner, staff or administrator.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathUsername"
+        - $ref: "#/components/parameters/pathCartProductId"
+        - $ref: "#/components/parameters/queryCartProductQuantity"
+      responses:
+        "201":
+          description: Cart created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    type: object
+                    properties:
+                      cart:
+                        $ref: "#/components/schemas/Cart"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      tags:
+        - cart
+      operationId: removeProductFromCartByUsername
+      summary: Remove product from cart by username
+      description: Provide username, productId and optional clear option to remove a product from a user cart. A product may only be removed from a cart by an owner, staff or administrator.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathUsername"
+        - $ref: "#/components/parameters/pathCartProductId"
+        - $ref: "#/components/parameters/queryCartProductClear"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    type: object
+                    properties:
+                      cart:
+                        $ref: "#/components/schemas/Cart"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
 components:
   schemas:
     User:
@@ -755,7 +1122,12 @@ components:
         contents:
           type: array
           items:
-            $ref: "#/components/schemas/Product"
+            type: object
+            properties:
+              product:
+                $ref: "#/components/schemas/Product"
+              quantity:
+                type: integer
     Order:
       type: object
       properties:
@@ -776,7 +1148,12 @@ components:
         contents:
           type: array
           items:
-            $ref: "#/components/schemas/Product"
+            type: object
+            properties:
+              product:
+                $ref: "#/components/schemas/Product"
+              quantity:
+                type: integer
     ApiResponse:
       type: object
       properties:
@@ -821,9 +1198,37 @@ components:
       required: true
       schema:
         type: integer
+    pathCartProductId:
+      name: productId
+      description: the id assigned to a product
+      in: path
+      required: true
+      schema:
+        type: integer
+    queryCartProductQuantity:
+      name: quantity
+      description: the total quantity of a single item in a cart
+      in: query
+      required: false
+      schema:
+        type: integer
+    queryCartProductClear:
+      name: clear
+      description: Remove the product regardless of quantity if set true
+      in: query
+      required: false
+      schema:
+        type: boolean
     pathOrderId:
       name: id
       description: the id assigned to an order
+      in: path
+      required: true
+      schema:
+        type: integer
+    pathCartId:
+      name: id
+      description: the id assigned to a cart
       in: path
       required: true
       schema:
