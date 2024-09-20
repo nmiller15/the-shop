@@ -18,6 +18,8 @@ tags:
     description: Log in and out of your account
   - name: user
     description: Operations about user
+  - name: address
+    description: Operations about address
   - name: product
     description: Operations about product
   - name: order
@@ -931,6 +933,7 @@ paths:
         - $ref: "#/components/parameters/pathUsername"
       requestBody:
         description: An object containing properties for the cart to be updated. At least one property must be provided.
+        required: true
         content:
           application/json:
             schema:
@@ -950,6 +953,8 @@ paths:
                     properties:
                       cart:
                         $ref: "#/components/schemas/Cart"
+        "400":
+          $ref: "#/components/responses/BadRequestBody"
         "401":
           $ref: "#/components/responses/Unauthorized"
         "404":
@@ -1038,6 +1043,176 @@ paths:
                     properties:
                       cart:
                         $ref: "#/components/schemas/Cart"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /address:
+    get:
+      tags:
+        - address
+      operationId: getAllAddresses
+      summary: Get all addresses
+      description: Retrieve a list of every address in the database. For administrative use only.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    type: object
+                    properties:
+                      addresses:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Address"
+        "204":
+          description: Successful operation, no addresses
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /address/{userId}:
+    get:
+      tags:
+        - address
+      operationId: getAddressesByUserId
+      summary: Get addresses by user id
+      description: Provide a user id and receive all addresses associated with that user. Can only be requested by owner, staff or administrator.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathAddressUserId"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    type: object
+                    properties:
+                      addresses:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Address"
+        "204":
+          description: Successful operation, no addresses
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/UserNotFound"
+    post:
+      tags:
+        - address
+      operationId: addAddressByUserId
+      summary: Add address by user id
+      description: Provide a user id and a request body containing an address object to add an address to the user. Must be owner, staff or adminsitrator to perform this action.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathAddressUserId"
+      requestBody:
+        description: An object containing a properly formatted address
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Address"
+      responses:
+        "201":
+          description: Successfully added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    $ref: "#/components/schemas/Address"
+        "400":
+          $ref: "#/components/responses/BadRequestBody"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/UserNotFound"
+  /address/{userId}/{id}:
+    put:
+      tags:
+        - address
+      summary: Edit address by id
+      operationId: updateAddressById
+      description: Provide a user id and an address id with the updated properties in the request body to update an address. Addresses can only be updated by the owner, staff or an administrator.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathAddressUserId"
+        - $ref: "#/components/parameters/pathAddressId"
+      requestBody:
+        description: An object containing the properties the user wishes to update. Only updated properties are required.\"id\" and \"userId\" fields cannot be updated.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Address"
+      responses:
+        "201":
+          description: Successfully updated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    type: object
+                    properties:
+                      address:
+                        $ref: "#/components/schemas/Address"
+        "400":
+          $ref: "#/components/responses/BadRequestBody"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      tags:
+        - address
+      summary: Remove address by id
+      operationId: removeAddressById
+      description: Provide a user id and an address id to remove the address from the database. Addresses can only be removed by the owner, staff or an administrator.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathAddressUserId"
+        - $ref: "#/components/parameters/pathAddressId"
+      responses:
+        "204":
+          description: No content, removed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
         "401":
           $ref: "#/components/responses/Unauthorized"
         "404":
@@ -1186,6 +1361,20 @@ components:
         type: string
     pathUserId:
       name: id
+      description: the id assigned to a user
+      in: path
+      required: true
+      schema:
+        type: integer
+    pathAddressId:
+      name: id
+      description: the id assigned to an address
+      in: path
+      required: true
+      schema:
+        type: integer
+    pathAddressUserId:
+      name: userId
       description: the id assigned to a user
       in: path
       required: true
