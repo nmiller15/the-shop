@@ -78,6 +78,7 @@ paths:
       tags:
         - user
       summary: Get all users
+      operationId: getAllUsers
       description: Get all users, only accessible by staff and administrator users.
       parameters:
         - $ref: "#/components/parameters/sessionId"
@@ -137,6 +138,7 @@ paths:
       tags:
         - user
       summary: Get user by id
+      operationId: getUserById
       description: Provide a user id and get the information for the user, protected by session ids and cookies. Can only retrieve own information unless staff or administrator.
       parameters:
         - $ref: "#/components/parameters/sessionId"
@@ -160,6 +162,7 @@ paths:
       tags:
         - user
       summary: Edit user by id
+      operationId: updateUserById
       description: "Edit a user by providing valid User properties in the request body.\n Note: A user's properties can only be editied by the user themself or an administrator. The \"role\" property can only be edited by an administrator. The complete User model is not required in the request body."
       parameters:
         - $ref: "#/components/parameters/sessionId"
@@ -190,6 +193,7 @@ paths:
       tags:
         - user
       summary: Remove a user by id
+      operationId: deleteUserById
       description: "Remove a user by providing the id of the user. The requestor must be able to authenticate as an administrator, or the user with a matching id. Upon the request, a token will be sent back to the client in a protected cookie, the response must be validated using the token. (See Web Dev Simplified CSRF Token Video and implement similarly, or perhaps just provide the CSRF token.)"
       parameters:
         - $ref: "#/components/parameters/sessionId"
@@ -215,6 +219,7 @@ paths:
       tags:
         - user
       summary: Get a user by the user id
+      operationId: getUserByUsername
       description: "Get non-sensitive profile information for a user from the username. DOES NOT INCLUDE PASSWORD, OR ADDRESSES."
       parameters:
         - name: username
@@ -246,6 +251,204 @@ paths:
                         type: string
                       role:
                         type: string
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /product:
+    get:
+      tags:
+        - product
+      summary: Get all products
+      operationId: getAllProducts
+      description: Get infromation for all products in the database.
+      parameters:
+        - name: category
+          in: query
+          description: Provide a string matching a category to filter results
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Product"
+    post:
+      tags:
+        - product
+      summary: Add a new product
+      operationId: addProduct
+      requestBody:
+        description: Username and password must be provided.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+      responses:
+        "201":
+          description: Successful creation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    $ref: "#/components/schemas/User"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
+  /product/{id}:
+    get:
+      tags:
+        - product
+      summary: Get product by id
+      operationId: getProductById
+      description: Provide a product id and get the information for the product.
+      parameters:
+        - $ref: "#/components/parameters/pathProductId"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    $ref: "#/components/schemas/Product"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    put:
+      tags:
+        - product
+      summary: Edit product by id
+      operationId: updateProductById
+      description: "Edit a product by providing valid Product properties in the request body.\n Note: A product's properties can only be editied by a staff or administrator role. The complete Product model is not required in the request body. ATTN: IMAGES CANNOT BE ADDED THROUGH THIS ENDPOINT"
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathProductId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+      responses:
+        "201":
+          description: Successful operation, returns the updated product
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    $ref: "#/components/schemas/Product"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /product/{id}/image:
+    post:
+      tags:
+        - product
+      summary: Add product image
+      operationId: addProductImage
+      description: "Add an image for a product. This operation can only be performed by a staff or administrator role."
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathProductId"
+        - name: sequence
+          description: Provide a number to decide where this image will be displayed on the product page. Defaults to last.
+          in: query
+          schema:
+            type: integer
+      requestBody:
+        content:
+          image/jpeg: {}
+          image/png: {}
+      responses:
+        "201":
+          description: Successful operation, returns updated product
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    $ref: "#/components/schemas/Product"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /product/{id}/reorder-images:
+    put:
+      tags:
+        - product
+      summary: Reorder product images
+      operationId: reorderProductImage
+      description: 'Return a product''s "images" property with the new order and the endpoint returns the updated product. Note: The "path" property is not required.'
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - $ref: "#/components/parameters/pathProductId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                images:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      imageId:
+                        type: integer
+                      path:
+                        type: string
+                      sequence:
+                        type: integer
+      responses:
+        "201":
+          description: Succesful operation, returns updated product
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    $ref: "#/components/schemas/Product"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
         "404":
           $ref: "#/components/responses/NotFound"
 components:
@@ -377,6 +580,13 @@ components:
     pathUserId:
       name: id
       description: The id assigned to a user
+      in: path
+      required: true
+      schema:
+        type: string
+    pathProductId:
+      name: id
+      description: The id assigned to a product
       in: path
       required: true
       schema:
