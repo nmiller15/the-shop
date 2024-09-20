@@ -329,6 +329,145 @@ paths:
                         $ref: "#/components/schemas/Product"
         "400":
           $ref: "#/components/responses/BadRequestBody"
+  /product/category:
+    get:
+      tags:
+        - product
+      summary: Get all product categories
+      operationId: getAllCategories
+      description: Retrieve a list of product categories from the database.
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    type: object
+                    properties:
+                      categories:
+                        type: array
+                        items:
+                          type: string
+    post:
+      tags:
+        - product
+      summary: Add a category
+      operationId: addCategory
+      description: Provide a category name and four digit identifier to create a category listing. This can only be performed by staff or administrator.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+      requestBody:
+        description: an object containing a four-digit category id, and category string
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Category"
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    type: object
+                    properties:
+                      category:
+                        $ref: "#/components/schemas/Category"
+        "400":
+          $ref: "#/components/responses/BadRequestBody"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /product/category/{categoryId}:
+    put:
+      tags:
+        - product
+      summary: Edit a category string by id. Can only be edited by staff or administrator.
+      operationId: updateCategoryById
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - name: categoryId
+          description: Four letter unique identifier for each category
+          in: path
+          required: true
+          schema:
+            type: string
+            maxLength: 4
+            minLength: 4
+      requestBody:
+        description: an object containing a property with the value of the new category string
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                categoryString:
+                  type: string
+      responses:
+        "201":
+          description: Successful operation, updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: "#/components/schemas/ApiResponse"
+                  content:
+                    type: object
+                    properties:
+                      category:
+                        $ref: "#/components/schemas/Category"
+        "400":
+          $ref: "#/components/responses/BadRequestBody"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      tags:
+        - product
+      summary: Remove category by id
+      operationId: removeCategoryById
+      description: Provide a category identifier to remove from the database. Will only remove category if all products have been removed from the category. Can only be performed by an administrator.
+      parameters:
+        - $ref: "#/components/parameters/sessionId"
+        - $ref: "#/components/parameters/csrfToken"
+        - name: categoryId
+          description: Four letter unique identifier for each category
+          in: path
+          required: true
+          schema:
+            type: string
+            maxLength: 4
+            minLength: 4
+      responses:
+        "204":
+          description: No content, removed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /product/{id}:
     get:
       tags:
@@ -1329,6 +1468,15 @@ components:
                 $ref: "#/components/schemas/Product"
               quantity:
                 type: integer
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+          maxLength: 4
+          minLength: 4
+        categoryString:
+          type: string
     ApiResponse:
       type: object
       properties:
