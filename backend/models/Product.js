@@ -1,15 +1,14 @@
 class Product {
-  id = null;
-  name = "";
-  description = "";
-  category = "";
-  rating = null;
-  price = null;
-  active = false;
-  images = [];
-
   constructor(name) {
     this.name = name;
+
+    this.id = null;
+    this.description = "";
+    this.category = "";
+    this.rating = null;
+    this.price = null;
+    this.active = false;
+    this.images = [];
   }
 }
 
