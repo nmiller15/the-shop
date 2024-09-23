@@ -10,3 +10,5 @@ class Cart {
 
   // removeFromCart(product) {}
 }
+
+module.exports = Cart;
