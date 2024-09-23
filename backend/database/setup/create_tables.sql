@@ -5,7 +5,7 @@ CREATE TABLE "users" (
   "first_name" varchar,
   "last_name" varchar,
   "date_created" timestamp,
-  "is_admin" boolean
+  "role" varchar,
 );
 
 CREATE TABLE "addresses" (
@@ -37,7 +37,8 @@ CREATE TABLE "orders" (
   "number" serial PRIMARY KEY,
   "date_created" timestamp,
   "status" varchar DEFAULT 'submitted',
-  "address_id" integer,
+  "billing_address_id" integer,
+  "shipping_address_id" integer,
   "customer_id" varchar
 );
 
