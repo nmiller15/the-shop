@@ -1,10 +1,10 @@
 class User {
-  id;
-  username;
-  firstName;
-  lastName;
-  dateCreated;
-  role;
+  id = null;
+  username = "";
+  firstName = "";
+  lastName = "";
+  dateCreated = null;
+  role = "";
   addresses = [];
 
   constructor(username) {
