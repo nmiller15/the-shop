@@ -5,7 +5,7 @@ CREATE TABLE "users" (
   "first_name" varchar,
   "last_name" varchar,
   "date_created" timestamp,
-  "role" varchar,
+  "role" varchar
 );
 
 CREATE TABLE "addresses" (
@@ -80,7 +80,9 @@ ALTER TABLE "carts" ADD FOREIGN KEY ("username") REFERENCES "users" ("username")
 
 ALTER TABLE "orders" ADD FOREIGN KEY ("customer_id") REFERENCES "users" ("username");
 
-ALTER TABLE "orders" ADD FOREIGN KEY ("address_id") REFERENCES "addresses" ("id");
+ALTER TABLE "orders" ADD FOREIGN KEY ("billing_address_id") REFERENCES "addresses" ("id");
+
+ALTER TABLE "orders" ADD FOREIGN KEY ("shipping_address_id") REFERENCES "addresses" ("id");
 
 ALTER TABLE "product_images" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
 

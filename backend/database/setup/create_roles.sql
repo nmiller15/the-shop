@@ -66,7 +66,8 @@ GRANT DELETE ON products_carts TO p_carts_delete;
 
 -- products_orders
 GRANT SELECT ON products_orders TO p_orders_read;
-GRANT INSERT, UPDATE ON products_orders TO p_orders_write;
+GRANT INSERT ON products_orders TO p_orders_insert;
+GRANT UPDATE ON products_orders TO p_orders_update;
 
 -- users_addresses
 GRANT SELECT ON users_addresses TO p_addresses_read, p_users_read;
