@@ -2,7 +2,7 @@ const express = require("express");
 const OrderRouter = express.Router();
 const OrderController = require("../controllers/Order");
 
-OrderRouter.route("/order")
+OrderRouter.route("/")
   .get((req, res, next, session_id, csrf_token, unfulfilled) => {
     OrderController.getAllOrders(
       req,
@@ -17,7 +17,7 @@ OrderRouter.route("/order")
     OrderController.addOrder(req, res, next, body, session_id, csrf_token);
   });
 
-OrderRouter.route("/order/:id")
+OrderRouter.route("/:id")
   .get((req, res, next, session_id, csrf_token, id) => {
     OrderController.getOrderById(req, res, next, session_id, csrf_token, id);
   })
