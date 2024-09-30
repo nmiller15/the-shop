@@ -2,7 +2,7 @@ const express = require("express");
 const ProductRouter = express.Router();
 const ProductController = require("../controllers/Product");
 
-ProductRouter.route("/product")
+ProductRouter.route("/")
   .get((req, res, next, category) => {
     ProductController.getAllProducts(req, res, next, category);
   })
@@ -10,7 +10,7 @@ ProductRouter.route("/product")
     ProductController.addProduct(req, res, next, body, session_id, csrf_token);
   });
 
-ProductRouter.route("/product/category")
+ProductRouter.route("/category")
   .get((req, res, next) => {
     ProductController.getAllCategories(req, res, next);
   })
@@ -18,7 +18,7 @@ ProductRouter.route("/product/category")
     ProductController.addCategory(req, res, next, body, session_id, csrf_token);
   });
 
-ProductRouter.route("/product/category/:categoryId")
+ProductRouter.route("/category/:categoryId")
   .put((req, res, next, body, categoryId, session_id, csrf_token) => {
     ProductController.updateCategoryById(
       req,
@@ -41,7 +41,7 @@ ProductRouter.route("/product/category/:categoryId")
     );
   });
 
-ProductRouter.route("/product/:id")
+ProductRouter.route("/:id")
   .get((req, res, next, id) => {
     ProductController.getProductById(req, res, next, id);
   })
@@ -58,7 +58,7 @@ ProductRouter.route("/product/:id")
   });
 
 ProductRouter.post(
-  "/product/:id/image",
+  "/:id/image",
   (req, res, next, session_id, csrf_token, id, sequence) => {
     ProductController.addProductImage(
       req,
@@ -73,7 +73,7 @@ ProductRouter.post(
 );
 
 ProductRouter.put(
-  "/product/:id/reoreder-images",
+  "/:id/reoreder-images",
   (req, res, next, body, id, session_id, csrf_token) => {
     ProductController.reorderProductImages(
       req,
