@@ -10,9 +10,10 @@ UserRouter.get("/", (req, res, next) =>
   UserController.getAllUsers(req, res, next)
 );
 
-UserRouter.post("/", (req, res, next, body) =>
-  UserController.addUser(req, res, next, body)
-);
+UserRouter.post("/", (req, res, next) => {
+  const body = req.body;
+  UserController.addUser(req, res, next, body);
+});
 
 UserRouter.route("/:id")
   .get((req, res, next, session_id, csrf_token, id) => {

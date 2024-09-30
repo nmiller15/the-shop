@@ -10,7 +10,8 @@ ProductRouter.route("/")
   .get((req, res, next, category) => {
     ProductController.getAllProducts(req, res, next, category);
   })
-  .post((req, res, next, body, session_id, csrf_token) => {
+  .post((req, res, next, session_id, csrf_token) => {
+    const body = req.body;
     ProductController.addProduct(req, res, next, body, session_id, csrf_token);
   });
 
@@ -18,12 +19,14 @@ ProductRouter.route("/category")
   .get((req, res, next) => {
     ProductController.getAllCategories(req, res, next);
   })
-  .post((req, res, next, body, session_id, csrf_token) => {
+  .post((req, res, next, session_id, csrf_token) => {
+    const body = req.body;
     ProductController.addCategory(req, res, next, body, session_id, csrf_token);
   });
 
 ProductRouter.route("/category/:categoryId")
-  .put((req, res, next, body, categoryId, session_id, csrf_token) => {
+  .put((req, res, next, categoryId, session_id, csrf_token) => {
+    const body = req.body;
     ProductController.updateCategoryById(
       req,
       res,
@@ -49,7 +52,8 @@ ProductRouter.route("/:id")
   .get((req, res, next, id) => {
     ProductController.getProductById(req, res, next, id);
   })
-  .put((req, res, next, body, id, session_id, csrf_token) => {
+  .put((req, res, next, id, session_id, csrf_token) => {
+    const body = req.body;
     ProductController.updateProductById(
       req,
       res,
@@ -78,7 +82,8 @@ ProductRouter.post(
 
 ProductRouter.put(
   "/:id/reoreder-images",
-  (req, res, next, body, id, session_id, csrf_token) => {
+  (req, res, next, id, session_id, csrf_token) => {
+    const body = req.body;
     ProductController.reorderProductImages(
       req,
       res,

@@ -18,7 +18,8 @@ CartRouter.route("/:id")
   .get((req, res, next, session_id, csrf_token, id) => {
     CartController.getCartById(req, res, next, session_id, csrf_token, id);
   })
-  .put((req, res, next, body, id, session_id, csrf_token) => {
+  .put((req, res, next, id, session_id, csrf_token) => {
+    const body = req.body;
     CartController.updateCartById(
       req,
       res,
@@ -59,7 +60,6 @@ CartRouter.route("/:id/:productId")
     );
   });
 
-// TODO: Update this route in the openAPI spec
 CartRouter.route("/username/:username")
   .get((req, res, next, session_id, csrf_token, username) => {
     CartController.getCartByUsername(
@@ -71,7 +71,8 @@ CartRouter.route("/username/:username")
       username
     );
   })
-  .put((req, res, next, body, username, session_id, csrf_token) => {
+  .put((req, res, next, username, session_id, csrf_token) => {
+    const body = req.body;
     CartController.updateCartByUsername(
       req,
       res,
@@ -93,7 +94,6 @@ CartRouter.route("/username/:username")
     );
   });
 
-// TODO: Update this route in the openAPI spec
 CartRouter.route("/username/:username/product/:productId")
   .post(
     (req, res, next, session_id, csrf_token, username, productId, quantity) => {

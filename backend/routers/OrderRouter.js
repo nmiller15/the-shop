@@ -17,7 +17,8 @@ OrderRouter.route("/")
       unfulfilled
     );
   })
-  .post((req, res, next, body, session_id, csrf_token) => {
+  .post((req, res, next, session_id, csrf_token) => {
+    const body = req.body;
     OrderController.addOrder(req, res, next, body, session_id, csrf_token);
   });
 
@@ -25,7 +26,8 @@ OrderRouter.route("/:id")
   .get((req, res, next, session_id, csrf_token, id) => {
     OrderController.getOrderById(req, res, next, session_id, csrf_token, id);
   })
-  .put((req, res, next, body, id, session_id, csrf_token) => {
+  .put((req, res, next, id, session_id, csrf_token) => {
+    const body = req.body;
     OrderController.updateOrderById(
       req,
       res,
