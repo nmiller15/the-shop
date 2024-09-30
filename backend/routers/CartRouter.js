@@ -90,7 +90,7 @@ CartRouter.route("/username/:username")
   });
 
 // TODO: Update this route in the openAPI spec
-CartRouter.Route("/username/:username/product/:productId")
+CartRouter.route("/username/:username/product/:productId")
   .post(
     (req, res, next, session_id, csrf_token, username, productId, quantity) => {
       CartController.addProductToCartByUsername(
