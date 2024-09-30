@@ -33,9 +33,4 @@ UserRouter.get("/username/:username", (req, res, next, username) => {
   UserController.getUserByUsername(req, res, next, username);
 });
 
-// TODO
-// There's also supposed to be a /user/{username} route, this needs refactored
-// to /user/username/{username} or similar so that it won't confict with the
-// id routes
-
 module.exports = UserRouter;
