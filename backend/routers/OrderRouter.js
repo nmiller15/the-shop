@@ -33,8 +33,19 @@ OrderRouter.route("/:id")
     );
   });
 
-// TODO
-// Should also have an /order/{username} route, but this conflicts with id
-// refactor a /order/username/{username} or similar
+OrderRouter.get(
+  "/username/:username",
+  (req, res, next, session_id, csrf_token, username, includeInactive) => {
+    OrderController.getUserOrders(
+      req,
+      res,
+      next,
+      session_id,
+      csrf_token,
+      username,
+      includeInactive
+    );
+  }
+);
 
 module.exports = OrderRouter;
