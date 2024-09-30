@@ -6,9 +6,11 @@ AuthRouter.get("/test", (req, res) => {
   res.json("test ok");
 });
 
-AuthRouter.post("/login", (req, res, next, body) =>
-  AuthController.login(req, res, next, body)
-);
+AuthRouter.post("/login", (req, res, next) => {
+  const body = req.body;
+  AuthController.login(req, res, next, body);
+});
+
 AuthRouter.post("/logout", (req, res, next) =>
   AuthController.logout(req, res, next)
 );
