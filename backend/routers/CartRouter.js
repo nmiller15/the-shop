@@ -2,6 +2,10 @@ const express = require("express");
 const CartRouter = express.Router();
 const CartController = require("../controllers/Cart");
 
+CartRouter.get("/test", (req, res) => {
+  res.json("test ok");
+});
+
 CartRouter.route("/")
   .get((req, res, next, session_id, csrf_token) => {
     CartController.getAllCarts(req, res, next, session_id, csrf_token);

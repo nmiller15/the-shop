@@ -2,6 +2,10 @@ const express = require("express");
 const UserRouter = express.Router();
 const UserController = require("../controllers/User");
 
+UserRouter.get("/test", (req, res) => {
+  res.json("test ok");
+});
+
 UserRouter.get("/", (req, res, next) =>
   UserController.getAllUsers(req, res, next)
 );

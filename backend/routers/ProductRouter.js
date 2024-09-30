@@ -2,6 +2,10 @@ const express = require("express");
 const ProductRouter = express.Router();
 const ProductController = require("../controllers/Product");
 
+ProductRouter.get("/test", (req, res) => {
+  res.json("test ok");
+});
+
 ProductRouter.route("/")
   .get((req, res, next, category) => {
     ProductController.getAllProducts(req, res, next, category);

@@ -2,6 +2,10 @@ const express = require("express");
 const OrderRouter = express.Router();
 const OrderController = require("../controllers/Order");
 
+OrderRouter.get("/test", (req, res) => {
+  res.json("test ok");
+});
+
 OrderRouter.route("/")
   .get((req, res, next, session_id, csrf_token, unfulfilled) => {
     OrderController.getAllOrders(
