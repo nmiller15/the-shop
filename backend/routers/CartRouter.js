@@ -2,7 +2,7 @@ const express = require("express");
 const CartRouter = express.Router();
 const CartController = require("../controllers/Cart");
 
-CartRouter.route("/cart")
+CartRouter.route("/")
   .get((req, res, next, session_id, csrf_token) => {
     CartController.getAllCarts(req, res, next, session_id, csrf_token);
   })
@@ -10,7 +10,7 @@ CartRouter.route("/cart")
     CartController.addCart(req, res, next, session_id, csrf_token);
   });
 
-CartRouter.route("/cart/:id")
+CartRouter.route("/:id")
   .get((req, res, next, session_id, csrf_token, id) => {
     CartController.getCartById(req, res, next, session_id, csrf_token, id);
   })
@@ -29,7 +29,7 @@ CartRouter.route("/cart/:id")
     CartController.removeCartById(req, res, next, session_id, csrf_token, id);
   });
 
-CartRouter.route("/cart/:id/:productId")
+CartRouter.route("/:id/:productId")
   .post((req, res, next, session_id, csrf_token, id, productId, quantity) => {
     CartController.addProductToCartById(
       req,
@@ -56,7 +56,7 @@ CartRouter.route("/cart/:id/:productId")
   });
 
 // TODO: Update this route in the openAPI spec
-CartRouter.route("/cart/username/:username")
+CartRouter.route("/username/:username")
   .get((req, res, next, session_id, csrf_token, username) => {
     CartController.getCartByUsername(
       req,
@@ -90,7 +90,7 @@ CartRouter.route("/cart/username/:username")
   });
 
 // TODO: Update this route in the openAPI spec
-CartRouter.Route("/cart/username/:username/product/:productId")
+CartRouter.Route("/username/:username/product/:productId")
   .post(
     (req, res, next, session_id, csrf_token, username, productId, quantity) => {
       CartController.addProductToCartByUsername(
