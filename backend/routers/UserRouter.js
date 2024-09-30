@@ -2,15 +2,15 @@ const express = require("express");
 const UserRouter = express.Router();
 const UserController = require("../controllers/User");
 
-UserRouter.get("/user", (req, res, next) =>
+UserRouter.get("/", (req, res, next) =>
   UserController.getAllUsers(req, res, next)
 );
 
-UserRouter.post("/user", (req, res, next, body) =>
+UserRouter.post("/", (req, res, next, body) =>
   UserController.addUser(req, res, next, body)
 );
 
-UserRouter.route("/user/:id")
+UserRouter.route("/:id")
   .get((req, res, next, session_id, csrf_token, id) => {
     UserController.getUserById(req, res, next, session_id, csrf_token, id);
   })
@@ -28,6 +28,10 @@ UserRouter.route("/user/:id")
   .delete((req, res, next, session_id, csrf_token, id) => {
     UserController.deleteUserById(req, res, next, session_id, csrf_token, id);
   });
+
+UserRouter.get("/username/:username", (req, res, next, username) => {
+  UserController.getUserByUsername(req, res, next, username);
+});
 
 // TODO
 // There's also supposed to be a /user/{username} route, this needs refactored
