@@ -82,7 +82,9 @@ supertokens.init({
       },
     }),
     Session.init(),
-    Dashboard.init(),
+    Dashboard.init({
+      admins: ["mail@nolanmiller.me"],
+    }),
   ],
 });
 
