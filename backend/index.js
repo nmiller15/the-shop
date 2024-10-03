@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const {
   AuthRouter,
   UserRouter,
@@ -14,6 +15,7 @@ const supertokens = require("supertokens-node");
 const Session = require("supertokens-node/recipe/session");
 const EmailPassword = require("supertokens-node/recipe/emailpassword");
 const ThirdParty = require("supertokens-node/recipe/thirdparty");
+const { middleware } = require("supertokens-node/framework/express");
 
 supertokens.init({
   framework: "express",
@@ -83,6 +85,16 @@ supertokens.init({
 
 const app = express();
 const port = 8080;
+
+app.use(
+  cors({
+    origin: "localhost:3000",
+    allowedHeaders: ["content-type", ...supertokens.getAllCORSHeaders()],
+    credentials: true,
+  })
+);
+
+app.use(middleware());
 
 app.use(bodyParser.json());
 
