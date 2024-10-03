@@ -17,6 +17,7 @@ const EmailPassword = require("supertokens-node/recipe/emailpassword");
 const ThirdParty = require("supertokens-node/recipe/thirdparty");
 const { middleware } = require("supertokens-node/framework/express");
 const { errorHandler } = require("supertokens-node/framework/express");
+const Dashboard = require("supertokens-node/recipe/dashboard");
 
 supertokens.init({
   framework: "express",
@@ -81,6 +82,7 @@ supertokens.init({
       },
     }),
     Session.init(),
+    Dashboard.init(),
   ],
 });
 
