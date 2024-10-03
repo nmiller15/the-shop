@@ -20,6 +20,7 @@
     "js-yaml": "^3.3.0",
     "morgan": "^1.10.0",
     "nodemon": "^3.1.7",
-    "oas3-tools": "^2.2.3"
+    "oas3-tools": "^2.2.3",
+    "supertokens-node": "^20.1.3"
   }
 }

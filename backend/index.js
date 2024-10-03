@@ -10,6 +10,30 @@ const {
   CartRouter,
 } = require("./routers");
 
+const supertokens = require("supertokens-node");
+const Session = require("supertokens-node/recipe/session");
+const EmailPassword = require("supertokens-node/recipe/emailpassword");
+const ThirdParty = require("supertokens-node/recipe/thirdparty");
+
+supertokens.init({
+  framework: "express",
+  supertokens: {
+    connectionURI: "<ADD YOUR CONNECTION URI HERE",
+  },
+  appInfo: {
+    appName: "the shop",
+    apiDomain: "localhost:8080",
+    websiteDomain: "localhost:3000",
+    apiBasePath: "/auth",
+    websiteBasePath: "/auth",
+  },
+  recipesList: [
+    EmailPassword.init(),
+    ThirdParty.init({}),
+    websiteBasePath.init(),
+  ],
+});
+
 const app = express();
 const port = 8080;
 
