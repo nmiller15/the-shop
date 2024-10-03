@@ -22,8 +22,8 @@ import * as reactRouterDom from "react-router-dom";
 SuperTokens.init({
   appInfo: {
     appName: "the shop",
-    apiDomain: "localhost:8080",
-    websiteDomain: "localhost:3000",
+    apiDomain: "http://localhost:8080",
+    websiteDomain: "http://localhost:3000",
     apiBasePath: "/auth",
     websiteBasePath: "/auth",
   },

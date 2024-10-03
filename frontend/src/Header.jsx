@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { DesktopNav } from "./DesktopNav";
 import { MobileNav } from "./MobileNav";
 import { Link } from "react-router-dom";
+import { signOut } from "supertokens-auth-react/recipe/session";
 
 function Header() {
   const [categories, setCategories] = useState([
@@ -36,7 +37,13 @@ function Header() {
       <div className="mx-6 flex justify-between py-5">
         <Link to="/" className="flex gap-2 text-3xl md:text-4xl">
           <i className="iconoir-shop pt-[2px]"></i>
-          <p>the shop</p>
+          <p
+            onClick={() => {
+              signOut();
+            }}
+          >
+            the shop
+          </p>
         </Link>
         <div>
           <i
