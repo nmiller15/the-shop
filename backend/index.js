@@ -89,7 +89,7 @@ const port = 8080;
 
 app.use(
   cors({
-    origin: "localhost:3000",
+    origin: "http://localhost:3000",
     allowedHeaders: ["content-type", ...supertokens.getAllCORSHeaders()],
     credentials: true,
   })
