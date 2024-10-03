@@ -16,6 +16,7 @@ const Session = require("supertokens-node/recipe/session");
 const EmailPassword = require("supertokens-node/recipe/emailpassword");
 const ThirdParty = require("supertokens-node/recipe/thirdparty");
 const { middleware } = require("supertokens-node/framework/express");
+const { errorHandler } = require("supertokens-node/framework/express");
 
 supertokens.init({
   framework: "express",
@@ -108,6 +109,12 @@ app.use("/product", ProductRouter);
 app.use("/order", OrderRouter);
 app.use("/cart", CartRouter);
 
+app.use(errorHandler());
+
+// Add your own error handling in the space below
+// ---
+
+// ---
 app.listen(port, () => {
   console.log(`Server listening on port: ${port}`);
 });
