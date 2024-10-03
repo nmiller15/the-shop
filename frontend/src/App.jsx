@@ -14,6 +14,10 @@ import ThirdParty, {
 } from "supertokens-auth-react/recipe/thirdparty";
 import EmailPassword from "supertokens-auth-react/recipe/emailpassword";
 import Session from "supertokens-auth-react/recipe/session";
+import { getSuperTokensRoutesForReactRouterDom } from "supertokens-auth-react/ui";
+import { ThirdPartyPreBuiltUI } from "supertokens-auth-react/recipe/thirdparty/prebuiltui";
+import { EmailPasswordPreBuiltUI } from "supertokens-auth-react/recipe/emailpassword/prebuiltui";
+import * as reactRouterDom from "react-router-dom";
 
 SuperTokens.init({
   appInfo: {
@@ -45,6 +49,10 @@ function App() {
       <BrowserRouter>
         <Layout>
           <Routes>
+            {getSuperTokensRoutesForReactRouterDom(reactRouterDom, [
+              ThirdPartyPreBuiltUI,
+              EmailPasswordPreBuiltUI,
+            ])}
             <Route path="/" element={<ProductsList />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/products/:id" element={<ProductPage />} />
