@@ -4,6 +4,8 @@ const Session = require("supertokens-node/recipe/session");
 const EmailPassword = require("supertokens-node/recipe/emailpassword");
 const ThirdParty = require("supertokens-node/recipe/thirdparty");
 
+// TODO: Create OAuth keys for your providers in production use.
+
 module.exports.supertokensConfig = {
   framework: "express",
   supertokens: {
