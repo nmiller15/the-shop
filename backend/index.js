@@ -11,6 +11,7 @@ const {
   CartRouter,
 } = require("./routers");
 
+// Supertokens imports and initialization
 const supertokens = require("supertokens-node");
 const { middleware } = require("supertokens-node/framework/express");
 const { errorHandler } = require("supertokens-node/framework/express");
@@ -18,9 +19,11 @@ const { supertokensConfig } = require("./config/supertokensConfig");
 
 supertokens.init(supertokensConfig);
 
+// Initialize Express application
 const app = express();
 const port = 8080;
 
+// Mount middlewares
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -29,7 +32,7 @@ app.use(
   })
 );
 
-app.use(middleware());
+app.use(middleware()); // Supertokens middleware
 
 app.use(bodyParser.json());
 
@@ -43,7 +46,7 @@ app.use("/product", ProductRouter);
 app.use("/order", OrderRouter);
 app.use("/cart", CartRouter);
 
-app.use(errorHandler());
+app.use(errorHandler()); // Supertokens error handler
 
 // Add your own error handling in the space below
 // ---
